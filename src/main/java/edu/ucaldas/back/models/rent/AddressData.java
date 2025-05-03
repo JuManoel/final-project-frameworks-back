@@ -1,6 +1,6 @@
 package edu.ucaldas.back.models.rent;
 
-public record AdressData(String street,
+public record AddressData(String street,
         String city,
         String state,
         String number,

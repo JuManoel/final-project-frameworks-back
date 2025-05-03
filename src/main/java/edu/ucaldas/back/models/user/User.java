@@ -12,6 +12,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -85,7 +86,7 @@ public class User implements UserDetails{
     private String password;
     @Enumerated(EnumType.STRING)
     private TypeUser typeUser;
-    @OneToMany(mappedBy = "userReviewed")
+    @OneToMany(mappedBy = "userReviewed", fetch = FetchType.LAZY)
     private List<UserReview> reviews;
     private float stars;
     private boolean isActive;

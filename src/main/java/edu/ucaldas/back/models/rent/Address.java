@@ -24,7 +24,7 @@ import lombok.Setter;
  * <ul>
  *   <li>A no-argument constructor for creating an empty address.</li>
  *   <li>A parameterized constructor for creating an address with specific values.</li>
- *   <li>A constructor that accepts an {@link AdressData} object to initialize the fields.</li>
+ *   <li>A constructor that accepts an {@link AddressData} object to initialize the fields.</li>
  * </ul>
  * 
  * <p>Annotations:</p>
@@ -39,18 +39,18 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Adress {
+public class Address {
     private String street;
     private String city;
     private String state;
     private String number;
     private String complement;
 
-    public Adress(AdressData adressData) {
-        this.street = adressData.street();
-        this.city = adressData.city();
-        this.state = adressData.state();
-        this.number = adressData.number();
-        this.complement = adressData.complement();
+    public Address(AddressData addressData) {
+        this.street = addressData.street();
+        this.city = addressData.city();
+        this.state = addressData.state();
+        this.number = addressData.number();
+        this.complement = addressData.complement();
     }
 }

@@ -3,6 +3,7 @@ package edu.ucaldas.back.models.review;
 import edu.ucaldas.back.models.rent.House;
 import edu.ucaldas.back.models.user.User;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -44,7 +45,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HouseReview extends Review {
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "house_reviewed_id")
     private House houseReviewed;
 

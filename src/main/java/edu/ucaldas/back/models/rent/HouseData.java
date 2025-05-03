@@ -2,7 +2,7 @@ package edu.ucaldas.back.models.rent;
 
 public record HouseData(
         String description,
-        AdressData adressData,
+        AddressData addressData,
         long ownerId,
         float stars) {
 
