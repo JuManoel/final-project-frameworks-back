@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import edu.ucaldas.back.DTO.UserUpdateDTO;
 import edu.ucaldas.back.models.review.UserReview;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -138,6 +139,11 @@ public class User implements UserDetails{
     public String getUsername() {
 
         return this.email;
+    }
+
+    public void updateUser(UserUpdateDTO userUpdateDTO) {
+        this.name = userUpdateDTO.newName();
+        this.email = userUpdateDTO.newEmail();
     }
 
 }

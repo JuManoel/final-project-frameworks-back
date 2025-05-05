@@ -11,13 +11,18 @@ import edu.ucaldas.back.models.rent.House;
 
 @Repository
 public interface IHouseRepository extends JpaRepository<House, Long> {
-    // Custom query methods can be defined here if needed
-    Optional<House> findByIdAndIsActiveTrue(Long id); // Find house by ID and user ID
+        // Custom query methods can be defined here if needed
+        Optional<House> findByIdAndIsActiveTrue(Long id); // Find house by ID and user ID
 
-    boolean existsByAddressStreetAndAddressCityAndAddressStateAndAddressNumberAndAddressComplementAndIsActiveTrue(
-            String street, String city, String state, String number, String complement); // Check if address exists
+        boolean existsByAddressStreetAndAddressCityAndAddressStateAndAddressNumberAndAddressComplementAndIsActiveTrue(
+                        String street, String city, String state, String number, String complement); // Check if address
+                                                                                                     // exists
 
-    @Query("SELECT CASE WHEN COUNT(h) > 0 THEN true ELSE false END FROM House h WHERE h.address.street = :street AND h.address.city = :city AND h.address.state = :state AND h.address.number = :number AND h.address.complement = :complement AND h.isActive = true")
-    boolean existsByAddress(@Param("street") String street, @Param("city") String city, @Param("state") String state,
-            @Param("number") String number, @Param("complement") String complement);
+        @Query("SELECT CASE WHEN COUNT(h) > 0 THEN true ELSE false END FROM House h WHERE h.address.street = :street AND h.address.city = :city AND h.address.state = :state AND h.address.number = :number AND h.address.complement = :complement AND h.isActive = true")
+        boolean existsByAddress(@Param("street") String street, @Param("city") String city,
+                        @Param("state") String state,
+                        @Param("number") String number, @Param("complement") String complement);
+
+        @Query("SELECT CASE WHEN COUNT(h) > 0 THEN true ELSE false END FROM House h WHERE h.owner.email = :email AND h.isActive = true")
+        boolean existsByOwnerEmail(@Param("email") String email);
 }

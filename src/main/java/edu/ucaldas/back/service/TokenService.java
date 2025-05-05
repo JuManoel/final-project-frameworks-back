@@ -19,20 +19,26 @@ import org.springframework.beans.factory.annotation.Value;
  * This class provides methods to generate and validate JWT tokens
  * for user authentication and authorization.
  * 
- * <p>Features:
+ * <p>
+ * Features:
  * <ul>
- *   <li>Generates JWT tokens with user-specific claims such as email, ID, and name.</li>
- *   <li>Sets token expiration time to ensure security.</li>
- *   <li>Validates and extracts the subject (email) from a given JWT token.</li>
+ * <li>Generates JWT tokens with user-specific claims such as email, ID, and
+ * name.</li>
+ * <li>Sets token expiration time to ensure security.</li>
+ * <li>Validates and extracts the subject (email) from a given JWT token.</li>
  * </ul>
  * 
- * <p>Dependencies:
+ * <p>
+ * Dependencies:
  * <ul>
- *   <li>Uses the `com.auth0.jwt` library for JWT creation and verification.</li>
- *   <li>Relies on a secret key (`jwt.secret`) for signing and verifying tokens.</li>
+ * <li>Uses the `com.auth0.jwt` library for JWT creation and verification.</li>
+ * <li>Relies on a secret key (`jwt.secret`) for signing and verifying
+ * tokens.</li>
  * </ul>
  * 
- * <p>Usage:
+ * <p>
+ * Usage:
+ * 
  * <pre>
  * {@code
  * TokenService tokenService = new TokenService();
@@ -41,10 +47,13 @@ import org.springframework.beans.factory.annotation.Value;
  * }
  * </pre>
  * 
- * <p>Note:
+ * <p>
+ * Note:
  * <ul>
- *   <li>The secret key must be securely stored and not exposed in the codebase.</li>
- *   <li>Ensure the system clock is synchronized to avoid issues with token expiration.</li>
+ * <li>The secret key must be securely stored and not exposed in the
+ * codebase.</li>
+ * <li>Ensure the system clock is synchronized to avoid issues with token
+ * expiration.</li>
  * </ul>
  * 
  * @author Your Name
@@ -119,13 +128,15 @@ public class TokenService {
      * @param token the JWT token from which the subject is to be extracted.
      *              Must not be null or empty.
      * @return the subject contained in the token.
-     * @throws RuntimeException if the token is null, empty, or cannot be decoded.
-     * @throws JWTVerificationException if the token is invalid or fails verification.
+     * @throws RuntimeException         if the token is null, empty, or cannot be
+     *                                  decoded.
+     * @throws JWTVerificationException if the token is invalid or fails
+     *                                  verification.
      */
     public String getSubject(String token) {
         if (token == null || token.isEmpty()) {
             throw new RuntimeException();
-        }   
+        }
         DecodedJWT decodedJWT = null;
         try {
             Algorithm algorithm = Algorithm.HMAC256(secretKey);

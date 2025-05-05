@@ -1,7 +1,5 @@
 package edu.ucaldas.back.service;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +15,28 @@ import edu.ucaldas.back.service.validations.ValidationsHouse;
 import edu.ucaldas.back.service.validations.ValidationsUser;
 import jakarta.persistence.EntityNotFoundException;
 
+/**
+ * Service class for managing house-related operations.
+ * 
+ * This service provides methods to handle the creation and validation of house
+ * entities, ensuring that the necessary business rules are enforced before
+ * saving data to the database.
+ * 
+ * Dependencies:
+ * - IHouseRepository: Repository for accessing house data.
+ * - IUserRepository: Repository for accessing user data.
+ * - ValidationsHouse: Utility for validating house-related business rules.
+ * - ValidationsUser: Utility for validating user-related business rules.
+ * 
+ * Methods:
+ * - saveHouse(HouseData house): Saves a new house entity in the database after
+ *   validating the owner and address.
+ * 
+ * Exceptions:
+ * - EntityNotFoundException: Thrown if the owner of the house does not exist.
+ * - EntityAlredyExists: Thrown if the address of the house already exists in
+ *   the system.
+ */
 @Service
 public class HouseService {
 
@@ -29,6 +49,14 @@ public class HouseService {
     @Autowired
     private ValidationsUser validationsUser;
 
+    /**
+     * Saves a new house entity in the database.
+     *
+     * @param house The data of the house to be saved, including its owner and address.
+     * @return A HouseSaveDTO containing the saved house's address and description.
+     * @throws EntityNotFoundException If the owner of the house does not exist.
+     * @throws EntityAlredyExists If the address of the house already exists in the system.
+     */
     public HouseSaveDTO saveHouse(HouseData house) {
         // Convert HouseData to House entity and save it
         if (!validationsUser.existsUser(house.ownerId())) {
