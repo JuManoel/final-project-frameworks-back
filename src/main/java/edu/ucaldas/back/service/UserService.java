@@ -79,7 +79,7 @@ public class UserService {
      *
      * @param email the email address of the user to retrieve
      * @return a {@link UserGetTDO} object containing the user's details such as
-     *         name, email, stars, and type of user
+     *         name, email, stars, and type of  user
      * @throws EntityNotFoundException if the user does not exist or is not active
      */
     public UserGetTDO getUser(String email) {
