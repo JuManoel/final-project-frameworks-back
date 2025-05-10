@@ -32,7 +32,7 @@ import lombok.Setter;
  * @see UserReviewData
  */
 @Entity
-@Table(name = "user_review")
+@Table(name = "user_reviews")
 @Getter
 @Setter
 @NoArgsConstructor

@@ -52,7 +52,7 @@ import lombok.Setter;
  * - @JoinColumn: Specifies the foreign key columns for the relationships.
  */
 @Entity
-@Table(name = "message")
+@Table(name = "messages")
 @Getter
 @Setter
 @NoArgsConstructor

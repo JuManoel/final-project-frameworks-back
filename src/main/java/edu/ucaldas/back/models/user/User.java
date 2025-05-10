@@ -70,7 +70,7 @@ import lombok.Setter;
  * </ul>
  */
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor

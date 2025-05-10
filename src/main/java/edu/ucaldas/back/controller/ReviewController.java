@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucaldas.back.models.review.UserReviewData;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/review")

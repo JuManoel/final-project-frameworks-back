@@ -58,7 +58,7 @@ import lombok.Setter;
  * </p>
  */
 @Entity
-@Table(name = "house")
+@Table(name = "houses")
 @Getter
 @Setter
 @NoArgsConstructor

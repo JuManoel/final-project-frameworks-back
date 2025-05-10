@@ -43,7 +43,7 @@ import lombok.Setter;
  *   with the provided rental data, house, and locator. Sets "accepted" to false and "isActive" to true.
  */
 @Entity
-@Table(name = "rent")
+@Table(name = "rents")
 @Getter
 @Setter
 @NoArgsConstructor

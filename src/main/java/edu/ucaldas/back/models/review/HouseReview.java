@@ -39,7 +39,7 @@ import lombok.Setter;
  * </ul>
  */
 @Entity
-@Table(name = "house_review")
+@Table(name = "house_reviews")
 @Getter
 @Setter
 @NoArgsConstructor

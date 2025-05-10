@@ -52,7 +52,7 @@ import lombok.Setter;
  * </ul>
  */
 @Entity
-@Table(name = "review")
+@Table(name = "reviews")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter

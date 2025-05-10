@@ -30,7 +30,7 @@ import lombok.Setter;
  * - isActive: A boolean indicating whether the image message is active.
  */
 @Entity
-@Table(name = "image_message")
+@Table(name = "image_messages")
 @Getter
 @Setter
 @NoArgsConstructor

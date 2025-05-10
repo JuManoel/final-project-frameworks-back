@@ -12,6 +12,6 @@ import edu.ucaldas.back.models.review.UserReview;
 public interface IUserReviewRepository extends IReviewRepository {
 
     @Query("SELECT ur FROM UserReview ur WHERE ur.userReviewed.email = :email AND ur.isActive = true")
-    Page<UserReview> findByUserReviewedEmail(@Param("email") String email, org.springdoc.core.converters.models.Pageable page);
+    Page<UserReview> findByUserReviewedEmail(@Param("email") String email, Pageable page);
     
 }
