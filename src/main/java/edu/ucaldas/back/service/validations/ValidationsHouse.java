@@ -89,4 +89,9 @@ public class ValidationsHouse {
     public boolean userHasHouse(String email) {
         return houseRepository.existsByOwnerEmail(email);
     }
+
+    public boolean existsHouse(long id) {
+        return houseRepository.existsById(id);
+    }
+
 }

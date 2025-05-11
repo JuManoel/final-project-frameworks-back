@@ -32,7 +32,7 @@ public class ValidationsUser {
      * @return {@code true} if the email exists in the repository, {@code false} otherwise
      */
     public boolean existsEmail(String email) {
-        return userRepository.existsByEmail(email);
+        return userRepository.existsByEmailAndIsActiveTrue(email);
     }
 
     /**
@@ -52,6 +52,6 @@ public class ValidationsUser {
      * @return true if a user with the given email exists, false otherwise
      */
     public boolean existsUser(String email) {
-        return userRepository.existsByEmail(email);
+        return userRepository.existsByEmailAndIsActiveTrue(email);
     }
 }

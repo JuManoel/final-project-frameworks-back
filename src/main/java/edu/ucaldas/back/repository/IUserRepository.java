@@ -13,6 +13,6 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     Optional<User> findByIdAndIsActiveTrue(Long id);
     UserDetails findByEmailAndIsActiveTrue(String email);
     Optional<User> getByEmailAndIsActiveTrue(String email);
-    boolean existsByEmail(String email);
+    boolean existsByEmailAndIsActiveTrue(String email);
 
 }
