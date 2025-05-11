@@ -14,7 +14,7 @@ public enum TypeUser {
     /**
      * Represents a tenant user type.
      */
-    TENANT("tenant"),
+    CLIENT("client"),
 
     /**
      * Represents an admin user type.

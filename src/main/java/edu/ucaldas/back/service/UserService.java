@@ -1,6 +1,7 @@
 package edu.ucaldas.back.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import edu.ucaldas.back.DTO.UserGetTDO;
@@ -60,6 +61,9 @@ public class UserService {
     @Autowired
     private ValidationsHouse validationsHouse;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     /**
      * Saves a new user to the repository after validating the email.
      *
@@ -71,6 +75,7 @@ public class UserService {
             throw new EntityAlredyExists("Email already exists");
         }
         User newUser = new User(user);
+        newUser.setPassword(passwordEncoder.encode(user.password()));
         userRepository.save(newUser);
     }
 

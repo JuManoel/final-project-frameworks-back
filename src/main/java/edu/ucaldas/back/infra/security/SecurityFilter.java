@@ -1,5 +1,7 @@
 package edu.ucaldas.back.infra.security;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +15,7 @@ import edu.ucaldas.back.repository.IUserRepository;
 import edu.ucaldas.back.service.TokenService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -106,12 +109,20 @@ public class SecurityFilter extends OncePerRequestFilter {
      * @param response    the HTTP response to be sent
      * @param filterChain the filter chain to pass the request and response to the
      *                    next filter
+     * @throws ServletException 
+     * @throws IOException 
      */
     @SuppressWarnings("null")
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         // Implement your security filter logic here
         // For example, you can check for authentication tokens or headers
         // and validate them before allowing access to the requested resource.
+        String requestURI = request.getRequestURI();
+        if (requestURI.equals("/login") || requestURI.equals("/user")) {
+            // Ignora o filtro para rotas públicas
+            filterChain.doFilter(request, response);
+            return;
+        }
         var authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             var token = authorizationHeader.replace("Bearer ", "");

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import edu.ucaldas.back.DTO.ReviewDTO;
 import edu.ucaldas.back.models.review.HouseReview;
 import edu.ucaldas.back.models.review.HouseReviewData;
-import edu.ucaldas.back.models.user.User;
 import edu.ucaldas.back.repository.IHouseRepository;
 import edu.ucaldas.back.repository.IHouseReviewRepository;
 import edu.ucaldas.back.repository.IUserRepository;

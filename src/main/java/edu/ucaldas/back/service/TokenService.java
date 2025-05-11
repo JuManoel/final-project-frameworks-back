@@ -119,7 +119,7 @@ public class TokenService {
     }
 
     public Instant generateExpliration() {
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-5:00"));
+        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-05:00"));
     }
 
     /**

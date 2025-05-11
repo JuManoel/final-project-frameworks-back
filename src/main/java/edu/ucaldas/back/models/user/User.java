@@ -96,7 +96,7 @@ public class User implements UserDetails{
         this.name = userData.name();
         this.email = userData.email();
         this.password = userData.password();
-        this.typeUser = userData.typeUser();
+        this.typeUser = TypeUser.valueOf(userData.typeUser());
         this.stars = 0;
         this.isActive = true;
     }
@@ -117,8 +117,8 @@ public class User implements UserDetails{
             case ADMIN -> {
                 return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
             }
-            case TENANT -> {
-                return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+            case CLIENT -> {
+                return List.of(new SimpleGrantedAuthority("ROLE_CLIENT"));
             }
             case OWNER -> {
                 return List.of(new SimpleGrantedAuthority("ROLE_OWNER"));
