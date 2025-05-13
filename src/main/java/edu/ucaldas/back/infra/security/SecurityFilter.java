@@ -115,14 +115,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     @SuppressWarnings("null")
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         // Implement your security filter logic here
-        // For example, you can check for authentication tokens or headers
         // and validate them before allowing access to the requested resource.
-        String requestURI = request.getRequestURI();
-        if (requestURI.equals("/login") || requestURI.equals("/user")) {
-            // Ignora o filtro para rotas públicas
-            filterChain.doFilter(request, response);
-            return;
-        }
         var authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             var token = authorizationHeader.replace("Bearer ", "");
@@ -146,10 +139,9 @@ public class SecurityFilter extends OncePerRequestFilter {
             } else {
                 throw new ErrorToken("Invalid token");
             }
-        } else {
-            // Handle the case where the token is missing or invalid
-            throw new MissingToken("Missing or invalid token");
         }
+        filterChain.doFilter(request, response);
+        
     }
 
 }

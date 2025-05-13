@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -68,7 +69,7 @@ public class UserController {
      * @return A ResponseEntity containing the updated UserUpdateDTO object.
      *         The response is returned with an HTTP status of 200 (OK).
      */
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<UserUpdateDTO> updateUser(@RequestBody @Valid UserUpdateDTO user) {
         return ResponseEntity.ok(userService.updateUser(user));
     }
@@ -82,7 +83,7 @@ public class UserController {
      * @return a ResponseEntity containing a success message if the password 
      *         update is successful.
      */
-    @PostMapping("/update/password")
+    @PutMapping("/update/password")
     public ResponseEntity<String> updateUserPassword(@RequestBody @Valid UserUpdatePasswordDTO userUpdatePasswordDTO) {
         userService.updateUserPassword(userUpdatePasswordDTO);
         return ResponseEntity.ok("Password updated successfully");

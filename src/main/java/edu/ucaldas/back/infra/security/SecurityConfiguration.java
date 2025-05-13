@@ -3,6 +3,7 @@ package edu.ucaldas.back.infra.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -95,18 +96,15 @@ public class SecurityConfiguration {
      *                   </ul>
      */
     @Bean
-    @SuppressWarnings("removal")
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable() // Disable CSRF protection
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Set session management to stateless
-                .and()
-                .authorizeHttpRequests()
-                .requestMatchers("/login", "/user").permitAll() // Allow access to login and user creation endpoints
-                .anyRequest().authenticated() // Require authentication for all other requests
-                .and()
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class); // Add custom security                                                                               // filter
-        return http.build();
+        return http.csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> {
+            auth.requestMatchers("/login").permitAll();
+            auth.requestMatchers(HttpMethod.POST,"/user").permitAll();
+            auth.anyRequest().authenticated();
+        })
+        .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class).build();                                                                         // filter
     }
 
     /**
