@@ -6,7 +6,7 @@ Desarrollada con Spring Boot, JPA y JWT para autenticación segura.
 
 ---
 
-## 📄 Página 1: Descripción General
+## Descripción General
 
 - **Tecnologías:** Java 17, Spring Boot, Spring Security, JPA, JWT, PostgreSQL/H2.
 - **Funcionalidad principal:**  
@@ -19,7 +19,7 @@ Desarrollada con Spring Boot, JPA y JWT para autenticación segura.
 
 ---
 
-## 📄 Página 2: Autenticación
+## Autenticación
 
 ### Login
 
@@ -45,7 +45,7 @@ Desarrollada con Spring Boot, JPA y JWT para autenticación segura.
 
 ---
 
-## 📄 Página 3: Usuarios
+## Usuarios
 
 ### Crear usuario
 
@@ -135,7 +135,7 @@ Desarrollada con Spring Boot, JPA y JWT para autenticación segura.
 
 ---
 
-## 📄 Página 4: Notas Generales
+## Notas Generales
 
 - Todos los endpoints (excepto crear usuario y login) requieren autenticación con JWT.
 - El token debe enviarse en el header:  
