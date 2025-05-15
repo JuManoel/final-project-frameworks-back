@@ -15,4 +15,7 @@ public interface IHouseReviewRepository extends IReviewRepository{
     @Query("SELECT hr FROM HouseReview hr WHERE hr.houseReviewed.id = :houseId AND hr.isActive = true ORDER BY hr.dateTime DESC")
     Page<HouseReview> findByHouseReviewedByHouseId(@Param("houseId")Long id, Pageable page);
 
+    @Query("SELECT AVG(hr.stars) FROM HouseReview hr WHERE hr.houseReviewed.id = :houseId AND hr.isActive = true")
+    Float findAverageStarsByHouseId(@Param("houseId") Long id);
+
 }

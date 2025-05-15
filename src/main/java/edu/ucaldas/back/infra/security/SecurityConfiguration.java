@@ -101,6 +101,8 @@ public class SecurityConfiguration {
         .authorizeHttpRequests(auth -> {
             auth.requestMatchers("/login").permitAll();
             auth.requestMatchers(HttpMethod.POST,"/user").permitAll();
+            auth.requestMatchers(HttpMethod.POST, "/review/house").hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENT");
+            auth.requestMatchers(HttpMethod.POST, "/house/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_OWENER");
             auth.anyRequest().authenticated();
         })
         .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

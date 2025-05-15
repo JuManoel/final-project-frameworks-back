@@ -146,4 +146,12 @@ public class User implements UserDetails{
         this.email = userUpdateDTO.newEmail();
     }
 
+    public void addStars(int stars2) {
+        if (this.reviews == null || this.reviews.isEmpty()) {
+            this.stars = stars2;
+        } else {
+            this.stars = (this.stars * this.reviews.size() + stars2) / (this.reviews.size() + 1);
+        }
+    }
+
 }

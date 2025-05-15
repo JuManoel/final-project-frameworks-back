@@ -61,7 +61,7 @@ public class AutenticationController {
         var userAuthenticated = authenticationManager.authenticate(authentication);
         var user = (User) userAuthenticated.getPrincipal(); // Retrieve the User object
         var token = tokenService.generateToken(user);
-        TokenDTO tokenDTO = new TokenDTO(token, user.getEmail(), user.getName());
+        TokenDTO tokenDTO = new TokenDTO(token, user.getEmail(), user.getName(), user.getTypeUser().toString());
         return ResponseEntity.ok(tokenDTO);
     }
 }

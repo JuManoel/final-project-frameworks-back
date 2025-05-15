@@ -12,6 +12,7 @@ import edu.ucaldas.back.repository.IUserRepository;
 import edu.ucaldas.back.repository.IUserReviewRepository;
 import edu.ucaldas.back.service.validations.ValidationsUser;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 
 @Service
 public class UserReviewService {
@@ -33,6 +34,7 @@ public class UserReviewService {
 
     }
 
+    @Transactional
     public ReviewDTO createUserReview(UserReviewData userReviewData) {
         // Implement the logic to create a new user review
         // This may involve saving the review to the database and returning the created
@@ -48,6 +50,7 @@ public class UserReviewService {
         var userReviewed = userRepository.getByEmailAndIsActiveTrue(userReviewData.userReviewed()).get();
         var userReview = new UserReview(userReviewData, writer, userReviewed);
         userReviewRepository.save(userReview);
+        userReviewed.addStars(userReview.getStars());
         return new ReviewDTO(userReview.getWriter().getEmail(), userReview.getWriter().getName(),
                 userReview.getComment(), userReview.getStars(), userReview.getDateTime());
     }

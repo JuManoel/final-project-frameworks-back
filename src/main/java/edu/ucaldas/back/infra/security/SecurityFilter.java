@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import edu.ucaldas.back.infra.exception.ErrorToken;
-import edu.ucaldas.back.infra.exception.MissingToken;
 import edu.ucaldas.back.repository.IUserRepository;
 import edu.ucaldas.back.service.TokenService;
 import jakarta.persistence.EntityNotFoundException;

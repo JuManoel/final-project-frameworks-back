@@ -14,4 +14,7 @@ public interface IUserReviewRepository extends IReviewRepository {
     @Query("SELECT ur FROM UserReview ur WHERE ur.userReviewed.email = :email AND ur.isActive = true")
     Page<UserReview> findByUserReviewedEmail(@Param("email") String email, Pageable page);
     
+    @Query("SELECT AVG(ur.stars) FROM UserReview ur WHERE ur.userReviewed.email = :email AND ur.isActive = true")
+    Float findAverageStarsByUserReviewedEmail(@Param("email") String email);
+
 }

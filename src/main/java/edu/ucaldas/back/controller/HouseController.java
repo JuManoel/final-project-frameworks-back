@@ -3,6 +3,7 @@ package edu.ucaldas.back.controller;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import edu.ucaldas.back.DTO.HouseGetDTO;
 import edu.ucaldas.back.DTO.HouseImageSaveDTO;
 import edu.ucaldas.back.DTO.HouseSaveDTO;
+import edu.ucaldas.back.DTO.HouseUpdateDTO;
 import edu.ucaldas.back.models.rent.HouseData;
 import edu.ucaldas.back.models.rent.HouseImageData;
 import edu.ucaldas.back.service.HouseImageService;
@@ -33,13 +36,13 @@ public class HouseController {
     private HouseImageService houseImageService;
 
     @GetMapping("/{id}")
-    public String getHouse(@PathVariable Long id) {
-        return "House data";
+    public HouseGetDTO getHouse(@PathVariable Long id) {
+        return houseService.getHouse(id);
     }
 
     @GetMapping()
-    public String getHousePages(@PageableDefault(size = 15, sort = "starts") Pageable page) {
-        return "House pages data";
+    public Page<HouseGetDTO> getHousePages(@PageableDefault(size = 15, sort = "starts") Pageable page) {
+        return houseService.getHouses(page);
     }
 
     @PostMapping()
@@ -56,8 +59,8 @@ public class HouseController {
     }
 
     @PutMapping("/{id}")
-    public String updateHouse() {
-        return "House updated";
+    public HouseUpdateDTO updateHouse(@PathVariable long id, @Valid HouseUpdateDTO houseUpdateDTO) {
+        return houseService.updateHouse(id, houseUpdateDTO);
     }
 
 }

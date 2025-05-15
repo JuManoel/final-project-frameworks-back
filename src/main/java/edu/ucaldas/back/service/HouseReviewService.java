@@ -14,6 +14,7 @@ import edu.ucaldas.back.repository.IUserRepository;
 import edu.ucaldas.back.service.validations.ValidationsHouse;
 import edu.ucaldas.back.service.validations.ValidationsUser;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 
 @Service
 public class HouseReviewService {
@@ -41,9 +42,9 @@ public class HouseReviewService {
         return reviews;
     }
 
+    @Transactional
     public ReviewDTO createHouseReview(HouseReviewData houseReviewData) {
-        // Implement the logic to create a new house review
-        // This may involve saving the review to the database and returning the created review
+
         if (!validationsHouse.existsHouse(houseReviewData.houseId())) {
             throw new EntityNotFoundException("Invalid house ID");
         }
@@ -58,6 +59,7 @@ public class HouseReviewService {
 
         HouseReview houseReview = new HouseReview(houseReviewData, writer, houseReviewed);
         houseReviewRepository.save(houseReview);
+        houseReviewed.addStars(houseReview.getStars());
         return new ReviewDTO(houseReviewData.writer(), writer.getName(), houseReviewData.comment(), houseReviewData.stars(), houseReview.getDateTime()); // Placeholder return statement
     }
 

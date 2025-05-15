@@ -2,6 +2,8 @@ package edu.ucaldas.back.repository;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +23,8 @@ public interface IHouseRepository extends JpaRepository<House, Long> {
 
         @Query("SELECT CASE WHEN COUNT(h) > 0 THEN true ELSE false END FROM House h WHERE h.owner.email = :email AND h.isActive = true")
         boolean existsByOwnerEmail(@Param("email") String email);
+
+        @Query("SELECT h FROM House h WHERE h.isActive = true AND h.isAvailable = true")
+        Page<House> findAllAvailableAndActiveHouses(Pageable pageable);
+
 }
