@@ -91,7 +91,7 @@ public class UserService {
         if (!validationsUser.existsUser(email)) {
             throw new EntityNotFoundException("User not found");
         }
-        User user = userRepository.getByEmailAndIsActiveTrue(email).get();
+        User user = userRepository.getUser(email).get();
         UserGetTDO userGetTDO = new UserGetTDO(user.getName(), user.getEmail(), user.getStars(), user.getTypeUser());
         return userGetTDO;
     }
@@ -107,13 +107,15 @@ public class UserService {
      */
     @Transactional
     public UserUpdateDTO updateUser(UserUpdateDTO userUpdateDTO) {
+        System.out.println("hola");
         if (!validationsUser.existsUser(userUpdateDTO.email())) {
+            System.out.println("User not found");
             throw new EntityNotFoundException("User not found");
         }
-        if (validationsUser.existsEmail(userUpdateDTO.newEmail())) {
+        User user = userRepository.getUser(userUpdateDTO.email()).get();
+        if (!user.getEmail().equals(userUpdateDTO.newEmail()) && validationsUser.existsEmail(userUpdateDTO.newEmail())) {
             throw new EntityAlredyExists("Email already exists");
         }
-        User user = userRepository.getByEmailAndIsActiveTrue(userUpdateDTO.email()).get();
         user.updateUser(userUpdateDTO);
         userRepository.save(user);
         return userUpdateDTO;
@@ -132,11 +134,11 @@ public class UserService {
         if (!validationsUser.existsUser(userUpdatePasswordDTO.email())) {
             throw new EntityNotFoundException("User not found");
         }
-        User user = userRepository.getByEmailAndIsActiveTrue(userUpdatePasswordDTO.email()).get();
-        if (!user.getPassword().equals(userUpdatePasswordDTO.password())) {
+        User user = userRepository.getUser(userUpdatePasswordDTO.email()).get();
+        if (!passwordEncoder.matches(userUpdatePasswordDTO.password(), user.getPassword())) {
             throw new EntityNotFoundException("Old password is incorrect");
         }
-        user.setPassword(userUpdatePasswordDTO.newPassword());
+        user.setPassword(passwordEncoder.encode(userUpdatePasswordDTO.newPassword()));
     }
 
     /**
@@ -162,11 +164,10 @@ public class UserService {
         if (validationsRent.userHasRent(email)) {
             throw new EntityNotFoundException("User has active rent");
         }
-
         if (validationsHouse.userHasHouse(email)) {
             throw new EntityNotFoundException("User has active house");
         }
-        User user = userRepository.getByEmailAndIsActiveTrue(email).get();
+        var user = userRepository.getUser(email).get();
         user.setActive(false);
         userRepository.save(user);
     }

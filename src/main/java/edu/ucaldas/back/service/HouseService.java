@@ -69,7 +69,7 @@ public class HouseService {
         if (!validationsUser.existsEmail(house.email())) {
             throw new EntityNotFoundException("User not found");
         }
-        User owner = userRepository.getByEmailAndIsActiveTrue(house.email()).get();
+        User owner = userRepository.getUser(house.email()).get();
         if (validationsHouse.existsAddress(house.addressData())) {
             throw new EntityAlredyExists("Address already exists");
         }

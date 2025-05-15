@@ -21,7 +21,7 @@ public interface IHouseRepository extends JpaRepository<House, Long> {
                         @Param("state") String state,
                         @Param("number") String number, @Param("complement") String complement);
 
-        @Query("SELECT CASE WHEN COUNT(h) > 0 THEN true ELSE false END FROM House h WHERE h.owner.email = :email AND h.isActive = true")
+        @Query("SELECT CASE WHEN COUNT(h) > 0 THEN true ELSE false END FROM House h JOIN h.owner o WHERE o.email = :email AND h.isActive = true")
         boolean existsByOwnerEmail(@Param("email") String email);
 
         @Query("SELECT h FROM House h WHERE h.isActive = true AND h.isAvailable = true")

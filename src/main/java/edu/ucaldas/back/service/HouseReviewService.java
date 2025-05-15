@@ -51,7 +51,7 @@ public class HouseReviewService {
         if (!validationsUser.existsEmail(houseReviewData.writer())) {
             throw new EntityNotFoundException("Invalid user email");
         }   
-        var writer = userRepository.getByEmailAndIsActiveTrue(houseReviewData.writer()).get();
+        var writer = userRepository.getUser(houseReviewData.writer()).get();
 
         var houseReviewed = houseRepository.findByIdAndIsActiveTrue(houseReviewData.houseId()).get();
 

@@ -12,6 +12,8 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 import edu.ucaldas.back.models.user.User;
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Value;
 
 /**
@@ -135,7 +137,7 @@ public class TokenService {
      */
     public String getSubject(String token) {
         if (token == null || token.isEmpty()) {
-            throw new RuntimeException();
+            throw new EntityNotFoundException("Token not found");
         }
         DecodedJWT decodedJWT = null;
         try {

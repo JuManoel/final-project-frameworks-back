@@ -58,7 +58,7 @@ public class ValidationsRent {
      * @throws EntityNotFoundException if the user with the given email does not exist
      */
     public boolean userHasRent(String email) {
-        if (userRepository.existsByEmailAndIsActiveTrue(email)) {
+        if (!userRepository.existsByEmailAndIsActiveTrue(email)) {
             throw new EntityNotFoundException("User not found");
         }
         return rentRepository.existsActiveRentByUserEmail(email);

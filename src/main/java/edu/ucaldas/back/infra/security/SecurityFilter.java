@@ -117,7 +117,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         // and validate them before allowing access to the requested resource.
         var authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            var token = authorizationHeader.replace("Bearer ", "");
+            var token = authorizationHeader.replace("Bearer ", ""); // duvidas sobre os 2 espacos
             var userEmail = tokenService.getSubject(token);
             if (userEmail != null) {
                 // Set the authentication in the security context or perform any other necessary

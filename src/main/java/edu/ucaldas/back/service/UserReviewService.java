@@ -46,8 +46,8 @@ public class UserReviewService {
             throw new EntityNotFoundException("Invalid user email");
         }
 
-        var writer = userRepository.getByEmailAndIsActiveTrue(userReviewData.writer()).get();
-        var userReviewed = userRepository.getByEmailAndIsActiveTrue(userReviewData.userReviewed()).get();
+        var writer = userRepository.getUser(userReviewData.writer()).get();
+        var userReviewed = userRepository.getUser(userReviewData.userReviewed()).get();
         var userReview = new UserReview(userReviewData, writer, userReviewed);
         userReviewRepository.save(userReview);
         userReviewed.addStars(userReview.getStars());
