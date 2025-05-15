@@ -47,27 +47,27 @@ O sistema permite:
    ```
 
 2. **Instale as dependências:**
-  ```bash
-  ./mvnw clean install
-  ```
-  - Ou, se você tiver o Maven instalado globalmente:
-  ```bash
-  mvn clean install
-  ```
+    ```bash
+    ./mvnw clean install
+    ```
+    - Ou, se você tiver o Maven instalado globalmente:
+      ```bash
+      mvn clean install
+      ```
 
 3. **Execute a aplicação:**
-  - Usando o wrapper do Maven:
-    ```bash
-    ./mvnw spring-boot:run
-    ```
-  - Ou, com Maven global:
-    ```bash
-    mvn spring-boot:run
-    ```
-  - Ou, rode diretamente o JAR gerado:
-    ```bash
-    java -jar target/*.jar
-    ```
+    - Usando o wrapper do Maven:
+      ```bash
+      ./mvnw spring-boot:run
+      ```
+    - Ou, com Maven global:
+      ```bash
+      mvn spring-boot:run
+      ```
+    - Ou, rode diretamente o JAR gerado:
+      ```bash
+      java -jar target/*.jar
+      ```
 
 4. **Acesse a API:**
   - Por padrão, a aplicação estará disponível em: [http://localhost:8080](http://localhost:8080)
