@@ -37,10 +37,4 @@ O sistema permite:
 
 ---
 
-## 📄 Licença
-
-Este projeto utiliza a licença MIT. Veja o arquivo [LICENSE](LICENSE).
-
----
-
 > Para detalhes sobre cada grupo de endpoints, acesse os links da documentação acima.
