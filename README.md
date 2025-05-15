@@ -1,146 +1,46 @@
-# FrameWorksJs - Backend API
+# FrameWorks JS - Backend
 
-Bienvenido al backend del proyecto **FrameWorksJs**.  
-Esta API RESTful permite la gestión de usuarios, autenticación y otras entidades del sistema.  
-Desarrollada con Spring Boot, JPA y JWT para autenticación segura.
-
----
-
-## Descripción General
-
-- **Tecnologías:** Java 17, Spring Boot, Spring Security, JPA, JWT, PostgreSQL/H2.
-- **Funcionalidad principal:**  
-  - Registro y autenticación de usuarios.
-  - Gestión de usuarios (crear, consultar, actualizar, eliminar).
-  - Seguridad basada en roles (`ADMIN`, `CLIENT`, `OWENER`).
-- **Autenticación:**  
-  - Basada en JWT.  
-  - El token se obtiene al hacer login y se debe enviar en el header `Authorization` para acceder a rutas protegidas.
+Backend do projeto final da matéria **FrameWorks JS**.  
+Este backend serve como base para um sistema de gerenciamento e negociação de aparta-estúdios para estrangeiros (forâneos).  
+O backend **não é obrigatório** para a matéria, mas foi desenvolvido para facilitar a integração e automação do sistema.
 
 ---
 
-## Autenticación
+## 📚 Documentação
 
-### Login
-
-- **Endpoint:** `POST /login`
-- **Body:**
-  ```json
-  {
-    "email": "usuario@email.com",
-    "password": "SuContraseña"
-  }
-  ```
-- **Respuesta exitosa:**
-  ```json
-  {
-    "token": "JWT_TOKEN_AQUI",
-    "email": "usuario@email.com",
-    "name": "Nombre del Usuario",
-    "typeUser": "ADMIN|CLIENT|OWENER"
-  }
-  ```
-- **Notas:**  
-  Guarda el token recibido. Debes enviarlo en el header `Authorization` como `Bearer JWT_TOKEN_AQUI` para acceder a los endpoints protegidos.
+- [Autenticação](docs/AUTH.md)
+- [Usuários](docs/USER.md)
+- [Casas](docs/HOUSE.md) <!-- Crie este arquivo se desejar documentar casas -->
+- [Avaliações](docs/REVIEW.md) <!-- Crie este arquivo se desejar documentar avaliações -->
 
 ---
 
-## Usuarios
+## 🚀 Tecnologias
 
-### Crear usuario
-
-- **Endpoint:** `POST /user`
-- **Body:**
-  ```json
-  {
-    "name": "Nombre del Usuario",
-    "email": "usuario@email.com",
-    "password": "SuContraseña",
-    "typeUser": "ADMIN|CLIENT|OWENER"
-  }
-  ```
-- **Respuesta exitosa:**  
-  `"User created successfully"`
-- **Notas:**  
-  No requiere autenticación.
+- Java 17
+- Spring Boot
+- Spring Security (JWT)
+- JPA/Hibernate
+- PostgreSQL / H2
+- Lombok
 
 ---
 
-### Obtener usuario por email
+## ℹ️ Sobre o Projeto
 
-- **Endpoint:** `GET /user/{email}`
-- **Headers:**  
-  `Authorization: Bearer JWT_TOKEN_AQUI`
-- **Respuesta exitosa:**
-  ```json
-  {
-    "name": "Nombre del Usuario",
-    "email": "usuario@email.com",
-    "stars": 4.5,
-    "typeUser": "ADMIN|CLIENT|OWENER"
-  }
-  ```
+O sistema permite:
+- Cadastro e autenticação de usuários (admin, cliente, proprietário)
+- Gerenciamento de usuários
+- Cadastro e gerenciamento de aparta-estúdios
+- Avaliação de usuários e imóveis
+- Segurança baseada em roles
 
 ---
 
-### Actualizar datos del usuario
+## 📄 Licença
 
-- **Endpoint:** `PUT /user/update`
-- **Headers:**  
-  `Authorization: Bearer JWT_TOKEN_AQUI`
-- **Body:**
-  ```json
-  {
-    "newName": "Nuevo Nombre",
-    "email": "usuario@email.com",
-    "newEmail": "nuevo@email.com"
-  }
-  ```
-- **Respuesta exitosa:**  
-  ```json
-  {
-    "newName": "Nuevo Nombre",
-    "email": "usuario@email.com",
-    "newEmail": "nuevo@email.com"
-  }
-  ```
+Este projeto utiliza a licença MIT. Veja o arquivo [LICENSE](LICENSE).
 
 ---
 
-### Actualizar contraseña
-
-- **Endpoint:** `PUT /user/update/password`
-- **Headers:**  
-  `Authorization: Bearer JWT_TOKEN_AQUI`
-- **Body:**
-  ```json
-  {
-    "email": "usuario@email.com",
-    "password": "ContraseñaActual",
-    "newPassword": "NuevaContraseña"
-  }
-  ```
-- **Respuesta exitosa:**  
-  `"Password updated successfully"`
-
----
-
-### Eliminar usuario
-
-- **Endpoint:** `DELETE /user/{email}`
-- **Headers:**  
-  `Authorization: Bearer JWT_TOKEN_AQUI`
-- **Respuesta exitosa:**  
-  `"User deleted successfully"`
-
----
-
-## Notas Generales
-
-- Todos los endpoints (excepto crear usuario y login) requieren autenticación con JWT.
-- El token debe enviarse en el header:  
-  `Authorization: Bearer JWT_TOKEN_AQUI`
-- Los campos y tipos de usuario válidos son: `ADMIN`, `CLIENT`, `OWENER`.
-- Si tienes dudas, revisa los ejemplos o pregunta al backend.
-
----
+> Para detalhes sobre cada grupo de endpoints, acesse os links da documentação acima.
