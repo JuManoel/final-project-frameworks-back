@@ -29,6 +29,7 @@ O backend **não é obrigatório** para a matéria, mas foi desenvolvido para fa
 ## ℹ️ Sobre o Projeto
 
 O sistema permite:
+
 - Cadastro e autenticação de usuários (admin, cliente, proprietário)
 - Gerenciamento de usuários
 - Cadastro e gerenciamento de aparta-estúdios
@@ -37,4 +38,37 @@ O sistema permite:
 
 ---
 
-> Para detalhes sobre cada grupo de endpoints, acesse os links da documentação acima.
+## 🛠️ Como rodar o projeto localmente
+
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/seu-usuario/seu-repositorio.git
+   cd final-project-frameworks-back
+   ```
+
+2. **Instale as dependências:**
+  ```bash
+  ./mvnw clean install
+  ```
+  Ou, se você tiver o Maven instalado globalmente:
+  ```bash
+  mvn clean install
+  ```
+
+3. **Execute a aplicação:**
+  - Usando o wrapper do Maven:
+    ```bash
+    ./mvnw spring-boot:run
+    ```
+  - Ou, com Maven global:
+    ```bash
+    mvn spring-boot:run
+    ```
+  - Ou, rode diretamente o JAR gerado:
+    ```bash
+    java -jar target/*.jar
+    ```
+
+4. **Acesse a API:**
+  - Por padrão, a aplicação estará disponível em: [http://localhost:8080](http://localhost:8080)
+  - Para detalhes sobre cada grupo de endpoints, acesse os links da documentação acima.
