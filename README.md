@@ -50,7 +50,7 @@ O sistema permite:
   ```bash
   ./mvnw clean install
   ```
-  Ou, se você tiver o Maven instalado globalmente:
+  - Ou, se você tiver o Maven instalado globalmente:
   ```bash
   mvn clean install
   ```
