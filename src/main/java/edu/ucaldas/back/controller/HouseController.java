@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +25,7 @@ import edu.ucaldas.back.models.rent.HouseData;
 import edu.ucaldas.back.models.rent.HouseImageData;
 import edu.ucaldas.back.service.HouseImageService;
 import edu.ucaldas.back.service.HouseService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.validation.Valid;
 
 @RestController
@@ -41,7 +42,7 @@ public class HouseController {
     }
 
     @GetMapping()
-    public Page<HouseGetDTO> getHousePages(@PageableDefault(size = 15, sort = "starts") Pageable page) {
+    public Page<HouseGetDTO> getHousePages(@PageableDefault(size = 15, sort = "stars") Pageable page) {
         return houseService.getHouses(page);
     }
 
@@ -59,8 +60,14 @@ public class HouseController {
     }
 
     @PutMapping("/{id}")
-    public HouseUpdateDTO updateHouse(@PathVariable long id, @Valid HouseUpdateDTO houseUpdateDTO) {
+    public HouseUpdateDTO updateHouse(@PathVariable long id, @RequestBody @Valid HouseUpdateDTO houseUpdateDTO) {
         return houseService.updateHouse(id, houseUpdateDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteHouse(@PathVariable long id) {
+        houseService.deleteHouse(id);
+        return ResponseEntity.ok("House deleted successfully");
     }
 
 }

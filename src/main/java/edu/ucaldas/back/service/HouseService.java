@@ -3,12 +3,16 @@ package edu.ucaldas.back.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import edu.ucaldas.back.DTO.HouseGetDTO;
 import edu.ucaldas.back.DTO.HouseSaveDTO;
 import edu.ucaldas.back.DTO.HouseUpdateDTO;
 import edu.ucaldas.back.infra.exception.EntityAlredyExists;
+import edu.ucaldas.back.infra.exception.NotPermited;
+import edu.ucaldas.back.models.rent.Address;
 import edu.ucaldas.back.models.rent.AddressData;
 import edu.ucaldas.back.models.rent.House;
 import edu.ucaldas.back.models.rent.HouseData;
@@ -66,10 +70,8 @@ public class HouseService {
      */
     public HouseSaveDTO saveHouse(HouseData house) {
         // Convert HouseData to House entity and save it
-        if (!validationsUser.existsEmail(house.email())) {
-            throw new EntityNotFoundException("User not found");
-        }
-        User owner = userRepository.getUser(house.email()).get();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User owner = (User) authentication.getPrincipal();
         if (validationsHouse.existsAddress(house.addressData())) {
             throw new EntityAlredyExists("Address already exists");
         }
@@ -104,12 +106,35 @@ public class HouseService {
 
     @Transactional
     public HouseUpdateDTO updateHouse(long id, HouseUpdateDTO houseUpdate) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
         if (!validationsHouse.existsHouse(id)) {
             throw new EntityNotFoundException("Invalid house ID");
         }
         var house = houseRepository.findByIdAndIsActiveTrue(id).get();
+        if (!house.getAddress().equals(new Address(houseUpdate.addressData()))  && validationsHouse.existsAddress(houseUpdate.addressData())) {
+            throw new EntityAlredyExists("Address already exists");
+        }
+        if(!house.getOwner().getEmail().equals(user.getEmail())){
+            throw new NotPermited("You are not the owner of this house");
+        }
         house.updateHouse(houseUpdate);
         return houseUpdate;
+    }
+
+    @Transactional
+    public void deleteHouse(long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        if (!validationsHouse.existsHouse(id)) {
+            throw new EntityNotFoundException("Invalid house ID");
+        }
+        var house = houseRepository.findByIdAndIsActiveTrue(id).get();
+        if(!house.getOwner().getEmail().equals(user.getEmail())){
+            throw new NotPermited("You are not the owner of this house");
+        }
+        house.setActive(false);
+        houseRepository.save(house);
     }
 
 }

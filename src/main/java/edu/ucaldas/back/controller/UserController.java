@@ -95,9 +95,9 @@ public class UserController {
      * @param email the email address of the user to be deleted
      * @return a ResponseEntity containing a success message if the user is deleted successfully
      */
-    @DeleteMapping("/{email}")
-    public ResponseEntity<String> deleteUser(@PathVariable String email) {
-        userService.deleteUser(email);
+    @DeleteMapping()
+    public ResponseEntity<String> deleteUser() {
+        userService.deleteUser();
         return ResponseEntity.ok("User deleted successfully");
     }
 

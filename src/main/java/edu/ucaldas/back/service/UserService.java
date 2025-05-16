@@ -1,6 +1,8 @@
 package edu.ucaldas.back.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +10,7 @@ import edu.ucaldas.back.DTO.UserGetTDO;
 import edu.ucaldas.back.DTO.UserUpdateDTO;
 import edu.ucaldas.back.DTO.UserUpdatePasswordDTO;
 import edu.ucaldas.back.infra.exception.EntityAlredyExists;
+import edu.ucaldas.back.infra.exception.NotPermited;
 import edu.ucaldas.back.models.user.User;
 import edu.ucaldas.back.models.user.UserData;
 import edu.ucaldas.back.repository.IUserRepository;
@@ -107,17 +110,12 @@ public class UserService {
      */
     @Transactional
     public UserUpdateDTO updateUser(UserUpdateDTO userUpdateDTO) {
-        System.out.println("hola");
-        if (!validationsUser.existsUser(userUpdateDTO.email())) {
-            System.out.println("User not found");
-            throw new EntityNotFoundException("User not found");
-        }
-        User user = userRepository.getUser(userUpdateDTO.email()).get();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
         if (!user.getEmail().equals(userUpdateDTO.newEmail()) && validationsUser.existsEmail(userUpdateDTO.newEmail())) {
             throw new EntityAlredyExists("Email already exists");
         }
         user.updateUser(userUpdateDTO);
-        userRepository.save(user);
         return userUpdateDTO;
     }
 
@@ -131,14 +129,13 @@ public class UserService {
      */
     @Transactional
     public void updateUserPassword(UserUpdatePasswordDTO userUpdatePasswordDTO) {
-        if (!validationsUser.existsUser(userUpdatePasswordDTO.email())) {
-            throw new EntityNotFoundException("User not found");
-        }
-        User user = userRepository.getUser(userUpdatePasswordDTO.email()).get();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
         if (!passwordEncoder.matches(userUpdatePasswordDTO.password(), user.getPassword())) {
             throw new EntityNotFoundException("Old password is incorrect");
         }
         user.setPassword(passwordEncoder.encode(userUpdatePasswordDTO.newPassword()));
+        userRepository.save(user);
     }
 
     /**
@@ -157,19 +154,11 @@ public class UserService {
      *         or has active houses.
      */
     @Transactional
-    public void deleteUser(String email) {
-        if (!validationsUser.existsUser(email)) {
-            throw new EntityNotFoundException("User not found");
-        }
-        if (validationsRent.userHasRent(email)) {
-            throw new EntityNotFoundException("User has active rent");
-        }
-        if (validationsHouse.userHasHouse(email)) {
-            throw new EntityNotFoundException("User has active house");
-        }
-        var user = userRepository.getUser(email).get();
-        user.setActive(false);
-        userRepository.save(user);
+    public void deleteUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User login = (User) authentication.getPrincipal();
+        login.setActive(false);
+        userRepository.save(login);
     }
 
 }

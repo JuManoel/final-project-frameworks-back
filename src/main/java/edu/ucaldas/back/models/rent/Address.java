@@ -53,4 +53,16 @@ public class Address {
         this.number = addressData.number();
         this.complement = addressData.complement();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Address address = (Address) obj;
+        return (street == null ? address.street == null : street.equals(address.street)) &&
+               (city == null ? address.city == null : city.equals(address.city)) &&
+               (state == null ? address.state == null : state.equals(address.state)) &&
+               (number == null ? address.number == null : number.equals(address.number)) &&
+               (complement == null ? address.complement == null : complement.equals(address.complement));
+    }
 }
