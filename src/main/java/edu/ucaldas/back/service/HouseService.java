@@ -18,9 +18,7 @@ import edu.ucaldas.back.models.rent.House;
 import edu.ucaldas.back.models.rent.HouseData;
 import edu.ucaldas.back.models.user.User;
 import edu.ucaldas.back.repository.IHouseRepository;
-import edu.ucaldas.back.repository.IUserRepository;
 import edu.ucaldas.back.service.validations.ValidationsHouse;
-import edu.ucaldas.back.service.validations.ValidationsUser;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
@@ -52,11 +50,7 @@ public class HouseService {
     @Autowired
     private IHouseRepository houseRepository;
     @Autowired
-    private IUserRepository userRepository;
-    @Autowired
     private ValidationsHouse validationsHouse;
-    @Autowired
-    private ValidationsUser validationsUser;
 
     /**
      * Saves a new house entity in the database.
@@ -112,10 +106,11 @@ public class HouseService {
             throw new EntityNotFoundException("Invalid house ID");
         }
         var house = houseRepository.findByIdAndIsActiveTrue(id).get();
-        if (!house.getAddress().equals(new Address(houseUpdate.addressData()))  && validationsHouse.existsAddress(houseUpdate.addressData())) {
+        if (!house.getAddress().equals(new Address(houseUpdate.addressData()))
+                && validationsHouse.existsAddress(houseUpdate.addressData())) {
             throw new EntityAlredyExists("Address already exists");
         }
-        if(!house.getOwner().getEmail().equals(user.getEmail())){
+        if (!house.getOwner().getEmail().equals(user.getEmail())) {
             throw new NotPermited("You are not the owner of this house");
         }
         house.updateHouse(houseUpdate);
@@ -130,7 +125,7 @@ public class HouseService {
             throw new EntityNotFoundException("Invalid house ID");
         }
         var house = houseRepository.findByIdAndIsActiveTrue(id).get();
-        if(!house.getOwner().getEmail().equals(user.getEmail())){
+        if (!house.getOwner().getEmail().equals(user.getEmail())) {
             throw new NotPermited("You are not the owner of this house");
         }
         house.setActive(false);

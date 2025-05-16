@@ -68,7 +68,6 @@
 - **Body:**
   ```json
   {
-    "email": "usuario@email.com",
     "password": "ContraseñaActual",
     "newPassword": "NuevaContraseña"
   }
@@ -80,7 +79,7 @@
 
 ### Eliminar usuario
 
-- **Endpoint:** `DELETE /user/{email}`
+- **Endpoint:** `DELETE /user`
 - **Headers:**  
   `Authorization: Bearer JWT_TOKEN_AQUI`
 - **Respuesta exitosa:**  
