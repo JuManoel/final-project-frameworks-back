@@ -1,4 +1,3 @@
-```markdown
 ## Casas (House)
 
 ### Criar casa
@@ -151,4 +150,3 @@
   `Authorization: Bearer JWT_TOKEN_AQUI`
 - Apenas o proprietário pode atualizar ou deletar sua casa.
 - Para dúvidas, consulte os exemplos ou pergunte ao backend.
-```
