@@ -18,38 +18,30 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 /**
  * Represents a message entity in a chat system.
- * This class is mapped to the "message" table in the database.
- * It contains information about the message content, sender, associated chat,
- * timestamp, and additional metadata such as read status and activity status.
- * 
- * An instance of this class can also be associated with an image message.
- * 
- * An additional constructor is provided to create a Message instance
- * using a MessageData object, a Chat, and a User.
- * 
- * Annotations:
- * - @Entity: Marks this class as a JPA entity.
- * - @Table: Specifies the table name in the database.
- * - @Getter, @Setter: Lombok annotations to generate getter and setter methods.
- * - @NoArgsConstructor, @AllArgsConstructor: Lombok annotations to generate constructors.
- * - @EqualsAndHashCode: Lombok annotation to generate equals and hashCode methods based on the "id" field.
- * 
+ * Each message is associated with a chat, a sender (user), optional image content,
+ * and contains metadata such as timestamp, read status, and active status.
+ *
  * Fields:
- * - id: Unique identifier for the message (primary key).
- * - chat: The chat to which this message belongs (many-to-one relationship).
- * - content: The textual content of the message.
- * - sender: The user who sent the message (many-to-one relationship).
- * - dateTime: The timestamp when the message was created.
- * - imageMessage: An optional image associated with the message (one-to-one relationship).
- * - isRead: Indicates whether the message has been read.
- * - isActive: Indicates whether the message is active.
- * 
- * Relationships:
- * - @ManyToOne: Used for the "chat" and "sender" fields to define many-to-one relationships.
- * - @OneToOne: Used for the "imageMessage" field to define a one-to-one relationship.
- * - @JoinColumn: Specifies the foreign key columns for the relationships.
+ * <ul>
+ *   <li>id - Unique identifier for the message.</li>
+ *   <li>chat - The chat to which this message belongs.</li>
+ *   <li>content - The textual content of the message.</li>
+ *   <li>sender - The user who sent the message.</li>
+ *   <li>dateTime - The date and time when the message was sent.</li>
+ *   <li>imageMessage - Optional image associated with the message.</li>
+ *   <li>isRead - Indicates if the message has been read.</li>
+ *   <li>isActive - Indicates if the message is active (not deleted or archived).</li>
+ * </ul>
+ *
+ * Constructors:
+ * <ul>
+ *   <li>No-args constructor for JPA.</li>
+ *   <li>All-args constructor for full initialization.</li>
+ *   <li>Custom constructor to create a message from message data, chat, and sender.</li>
+ * </ul>
  */
 @Entity
 @Table(name = "messages")

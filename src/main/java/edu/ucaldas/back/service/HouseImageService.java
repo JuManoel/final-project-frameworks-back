@@ -18,26 +18,32 @@ import edu.ucaldas.back.repository.IHouseImageRepository;
 import edu.ucaldas.back.repository.IHouseRepository;
 import jakarta.persistence.EntityNotFoundException;
 
+
 /**
- * Service class for managing house images.
- * 
- * This service provides functionality to save image files associated with houses.
- * It validates the file type, ensures the target directory exists, and associates
- * the image with a house in the database.
- * 
+ * Service class responsible for handling operations related to house images.
+ * <p>
+ * Provides functionality to save image files associated with houses, ensuring
+ * that only valid image files are accepted, generating unique filenames, storing
+ * files in the designated directory, and persisting image metadata linked to houses.
+ * </p>
+ *
+ * <p>
  * Dependencies:
- * - IHouseImageRepository: Repository for managing house image entities.
- * - IHouseRepository: Repository for managing house entities.
- * 
- * Methods:
- * - saveHouseImage(MultipartFile file, HouseImageData houseImageData): Saves an image
- *   file associated with a house and returns the details of the saved image.
- * 
- * Exceptions:
- * - IllegalArgumentException: Thrown if the provided file is not an image.
- * - EntityNotFoundException: Thrown if the house with the given ID is not found or is inactive.
- * - SaveFileError: Thrown if an error occurs while saving the image file.
- * - IOException: Thrown if an I/O error occurs during file saving.
+ * <ul>
+ *   <li>{@link IHouseImageRepository} for persisting image entities.</li>
+ *   <li>{@link IHouseRepository} for retrieving and validating house entities.</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * Main responsibilities:
+ * <ul>
+ *   <li>Validates uploaded files to ensure they are images.</li>
+ *   <li>Generates unique filenames and stores files in the "uploads" directory.</li>
+ *   <li>Associates images with active house entities.</li>
+ *   <li>Handles exceptions related to file operations and entity persistence.</li>
+ * </ul>
+ * </p>
  */
 @Service
 public class HouseImageService {
@@ -48,20 +54,19 @@ public class HouseImageService {
     private IHouseRepository houseRepository;
 
     /**
-     * Saves an image file associated with a house and returns the details of the
-     * saved image.
+     * Saves an image file associated with a house.
+     * <p>
+     * This method validates the uploaded file to ensure it is an image, generates a unique filename,
+     * stores the file in the "uploads" directory, and creates a new {@link HouseImage} entity linked to the specified house.
+     * </p>
      *
-     * @param file           The image file to be saved. Must be of a valid image
-     *                       MIME type.
-     * @param houseImageData Data containing the house ID to associate the image
-     *                       with.
-     * @return A DTO containing the house ID and the saved file name.
-     * @throws IOException              If an I/O error occurs during file saving.
-     * @throws IllegalArgumentException If the provided file is not an image.
-     * @throws EntityNotFoundException  If the house with the given ID is not found
-     *                                  or is inactive.
-     * @throws SaveFileError            If an error occurs while saving the image
-     *                                  file.
+     * @param file the image file to be uploaded and saved
+     * @param houseImageData data containing the house ID to associate the image with
+     * @return a {@link HouseImageSaveDTO} containing the house ID and the saved file name
+     * @throws IOException if an I/O error occurs during file saving
+     * @throws IllegalArgumentException if the uploaded file is not an image
+     * @throws EntityNotFoundException if the specified house does not exist or is not active
+     * @throws SaveFileError if any other error occurs while saving the image or entity
      */
     public HouseImageSaveDTO saveHouseImage(MultipartFile file, HouseImageData houseImageData) throws IOException {
         String contentType = file.getContentType();

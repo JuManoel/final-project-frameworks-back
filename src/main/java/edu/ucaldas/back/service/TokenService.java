@@ -17,50 +17,23 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 
 /**
- * Service class for handling JSON Web Token (JWT) operations.
- * This class provides methods to generate and validate JWT tokens
- * for user authentication and authorization.
- * 
+ * Service class responsible for generating and validating JWT tokens for user authentication.
  * <p>
- * Features:
- * <ul>
- * <li>Generates JWT tokens with user-specific claims such as email, ID, and
- * name.</li>
- * <li>Sets token expiration time to ensure security.</li>
- * <li>Validates and extracts the subject (email) from a given JWT token.</li>
- * </ul>
- * 
+ * This service provides methods to create JWT tokens containing user information and to extract
+ * the subject (typically the user's email or identifier) from a given token. Tokens are signed
+ * using the HMAC256 algorithm and a configurable secret key, and include claims such as user ID
+ * and name. The service also handles token expiration and validation.
+ * </p>
+ *
  * <p>
- * Dependencies:
- * <ul>
- * <li>Uses the `com.auth0.jwt` library for JWT creation and verification.</li>
- * <li>Relies on a secret key (`jwt.secret`) for signing and verifying
- * tokens.</li>
- * </ul>
- * 
- * <p>
- * Usage:
- * 
+ * Example usage:
  * <pre>
- * {@code
- * TokenService tokenService = new TokenService();
- * String token = tokenService.generateToken(user);
- * String subject = tokenService.getSubject(token);
- * }
+ *     String token = tokenService.generateToken(user);
+ *     String subject = tokenService.getSubject(token);
  * </pre>
- * 
- * <p>
- * Note:
- * <ul>
- * <li>The secret key must be securely stored and not exposed in the
- * codebase.</li>
- * <li>Ensure the system clock is synchronized to avoid issues with token
- * expiration.</li>
- * </ul>
- * 
- * @author Your Name
- * @version 1.0
- * @since 2023
+ * </p>
+ *
+ * @author juan-manoel
  */
 @Service
 public class TokenService {
@@ -69,43 +42,17 @@ public class TokenService {
     private String secretKey;
 
     /**
-     * Generates a JWT (JSON Web Token) for the given user.
+     * Generates a JWT token for the specified user.
+     * <p>
+     * The token includes the user's email as the subject, and adds claims for the user's ID and name.
+     * The token is signed using the HMAC256 algorithm with a secret key and is set to expire at a specific time.
+     * </p>
      *
-     * @param user The user for whom the token is being generated.
-     *             It must contain the user's email, ID, and name.
-     * @return A signed JWT string containing the user's email as the subject,
-     *         their ID and name as claims, and an expiration date.
-     * @throws RuntimeException If an error occurs during token generation.
+     * @param user the {@link User} object for whom the token is generated
+     * @return a signed JWT token as a {@link String}
+     * @throws RuntimeException if an error occurs during token generation
      */
     public String generateToken(User user) {
-        /*
-         * JWT.create():
-         * 
-         * Initializes the creation of a new JWT token.
-         * .withIssuer("frameworksjs"):
-         * 
-         * Adds the iss (issuer) claim to the token. This identifies the entity (in this
-         * case, "frameworksjs") that issued the token.
-         * .withSubject(user.getEmail()):
-         * 
-         * Adds the sub (subject) claim to the token. This typically identifies the
-         * principal (user) for whom the token is issued. Here, the user's email is used
-         * as the subject.
-         * .withClaim("id", user.getId()):
-         * 
-         * Adds a custom claim id to the token, storing the user's unique identifier.
-         * .withClaim("name", user.getName()):
-         * 
-         * Adds another custom claim name to the token, storing the user's name.
-         * .withExpiresAt(generateExpliration()):
-         * 
-         * Sets the exp (expiration) claim, which specifies the token's expiration time.
-         * The generateExpliration() method is used to calculate this value.
-         * .sign(algorithm):
-         * 
-         * Signs the token using the provided algorithm. This ensures the token's
-         * integrity and authenticity.
-         */
         try {
             Algorithm algorithm = Algorithm.HMAC256(secretKey);
             return JWT.create()
@@ -124,16 +71,18 @@ public class TokenService {
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-05:00"));
     }
 
+
     /**
-     * Extracts the subject from a given JWT token.
+     * Extracts and returns the subject (typically the user identifier) from a given JWT token.
+     * <p>
+     * This method verifies the provided JWT token using the HMAC256 algorithm and a predefined secret key.
+     * If the token is valid and issued by "frameworksjs", it returns the subject claim from the token.
+     * </p>
      *
-     * @param token the JWT token from which the subject is to be extracted.
-     *              Must not be null or empty.
-     * @return the subject contained in the token.
-     * @throws RuntimeException         if the token is null, empty, or cannot be
-     *                                  decoded.
-     * @throws JWTVerificationException if the token is invalid or fails
-     *                                  verification.
+     * @param token the JWT token from which to extract the subject
+     * @return the subject contained in the JWT token
+     * @throws EntityNotFoundException if the token is null or empty
+     * @throws RuntimeException if the token cannot be decoded or is invalid
      */
     public String getSubject(String token) {
         if (token == null || token.isEmpty()) {

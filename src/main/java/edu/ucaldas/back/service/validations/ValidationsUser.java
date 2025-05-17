@@ -5,20 +5,24 @@ import org.springframework.stereotype.Component;
 
 import edu.ucaldas.back.repository.IUserRepository;
 
+
 /**
- * The {@code ValidationsUser} class provides validation methods for user-related operations.
- * It interacts with the {@code IUserRepository} to perform checks such as verifying the existence
- * of users or email addresses in the repository.
+ * Service class providing validation methods related to user existence and activity status.
+ * <p>
+ * This component interacts with the {@link IUserRepository} to verify whether users exist
+ * and are active, based on their unique identifiers or email addresses.
+ * </p>
  *
- * <p>Methods in this class include:
- * <ul>
- *   <li>{@link #existsEmail(String)} - Checks if an email address exists in the repository.</li>
- *   <li>{@link #existsUser(Long)} - Checks if a user with a given ID exists and is active.</li>
- *   <li>{@link #existsUser(String)} - Checks if a user exists in the repository based on their email.</li>
- * </ul>
+ * <p>
+ * Typical usage:
+ * <pre>
+ *     boolean exists = validationsUser.existsUser(userId);
+ *     boolean emailExists = validationsUser.existsUser(email);
+ * </pre>
+ * </p>
  *
- * <p>This class is annotated with {@code @Component}, making it a Spring-managed bean.
- * It uses {@code @Autowired} to inject the {@code IUserRepository} dependency.
+ * @author juan-manoel
+ * @see IUserRepository
  */
 @Component
 public class ValidationsUser {
@@ -26,30 +30,10 @@ public class ValidationsUser {
     private IUserRepository userRepository;
 
     /**
-     * Checks if an email address already exists in the user repository.
+     * Checks if an active user exists with the specified email address.
      *
      * @param email the email address to check for existence
-     * @return {@code true} if the email exists in the repository, {@code false} otherwise
-     */
-    public boolean existsEmail(String email) {
-        return userRepository.existsByEmailAndIsActiveTrue(email);
-    }
-
-    /**
-     * Checks if a user with the given ID exists and is active.
-     *
-     * @param id the ID of the user to check
-     * @return {@code true} if a user with the given ID exists and is active, {@code false} otherwise
-     */
-    public boolean existsUser(Long id) {
-        return userRepository.findByIdAndIsActiveTrue(id).isPresent();
-    }
-
-    /**
-     * Checks if a user exists in the repository based on their email.
-     *
-     * @param email the email of the user to check for existence
-     * @return true if a user with the given email exists, false otherwise
+     * @return {@code true} if an active user with the given email exists, {@code false} otherwise
      */
     public boolean existsUser(String email) {
         return userRepository.existsByEmailAndIsActiveTrue(email);

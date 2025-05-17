@@ -27,47 +27,32 @@ import lombok.Setter;
 
 
 /**
- * Represents a user entity in the system. This class is annotated with JPA and 
- * Spring Security annotations to define its persistence and security behavior.
- * It implements the {@link UserDetails} interface to integrate with Spring Security.
+ * Represents a user entity in the system.
+ * <p>
+ * This class is mapped to the "users" table in the database and implements the {@link org.springframework.security.core.userdetails.UserDetails}
+ * interface for integration with Spring Security.
+ * </p>
+ * <p>
+ * Each user has a unique identifier, name, email, password, user type, a list of reviews, star rating, and an active status.
+ * The user type determines the granted authorities (roles) for authentication and authorization purposes.
+ * </p>
  *
- * <p>The User class contains the following fields:</p>
  * <ul>
- *   <li><b>id</b>: The unique identifier for the user, auto-generated.</li>
- *   <li><b>name</b>: The name of the user.</li>
- *   <li><b>email</b>: The email address of the user, which must be unique.</li>
- *   <li><b>password</b>: The password of the user.</li>
- *   <li><b>typeUser</b>: The type of user, represented as an enumerated value.</li>
- *   <li><b>reviews</b>: A list of reviews associated with the user.</li>
- *   <li><b>stars</b>: The average rating of the user, represented as a float.</li>
- *   <li><b>isActive</b>: A boolean indicating whether the user is active.</li>
+ *   <li>{@code id} - Unique identifier for the user.</li>
+ *   <li>{@code name} - Name of the user.</li>
+ *   <li>{@code email} - Unique email address of the user.</li>
+ *   <li>{@code password} - Encrypted password for authentication.</li>
+ *   <li>{@code typeUser} - Enum representing the type of user (e.g., ADMIN, CLIENT, OWNER).</li>
+ *   <li>{@code reviews} - List of reviews associated with the user.</li>
+ *   <li>{@code stars} - Average star rating for the user.</li>
+ *   <li>{@code isActive} - Indicates whether the user account is active.</li>
  * </ul>
  *
- * <p>The class provides the following functionality:</p>
- * <ul>
- *   <li>Mapping user roles to Spring Security authorities based on the user type.</li>
- *   <li>Returning the email as the username for authentication purposes.</li>
- *   <li>Constructors for creating user instances, including one that initializes 
- *       fields from a {@link UserData} object.</li>
- * </ul>
+ * <p>
+ * Provides methods for updating user information, managing star ratings, and retrieving user authorities.
+ * </p>
  *
- * <p>Annotations used:</p>
- * <ul>
- *   <li>{@link Entity}: Marks this class as a JPA entity.</li>
- *   <li>{@link Table}: Specifies the table name in the database.</li>
- *   <li>{@link Getter}, {@link Setter}: Lombok annotations to generate getters and setters.</li>
- *   <li>{@link NoArgsConstructor}, {@link AllArgsConstructor}: Lombok annotations to generate constructors.</li>
- *   <li>{@link EqualsAndHashCode}: Lombok annotation to generate equals and hashCode methods based on the "id" field.</li>
- *   <li>{@link Id}, {@link GeneratedValue}: JPA annotations for primary key generation.</li>
- *   <li>{@link Column}: Specifies column constraints, such as uniqueness for the email field.</li>
- *   <li>{@link Enumerated}: Maps the typeUser field to a string representation in the database.</li>
- *   <li>{@link OneToMany}: Defines a one-to-many relationship with the UserReview entity.</li>
- * </ul>
- *
- * <p>Implements:</p>
- * <ul>
- *   <li>{@link UserDetails}: Provides methods required for Spring Security integration.</li>
- * </ul>
+ * @author juan-manoel
  */
 @Entity
 @Table(name = "users")
@@ -100,15 +85,20 @@ public class User implements UserDetails{
         this.stars = 0;
         this.isActive = true;
     }
-
     /**
-     * Retrieves the collection of authorities granted to the user based on their type.
-     * This method maps the user's type to a specific role using Spring Security's 
-     * {@link GrantedAuthority}.
+     * Returns the authorities granted to the user based on their type.
+     * <p>
+     * This method overrides the {@code getAuthorities} method from the {@link org.springframework.security.core.userdetails.UserDetails} interface.
+     * It assigns a specific role to the user depending on the value of {@code typeUser}:
+     * <ul>
+     *   <li>{@code ADMIN} - returns a list containing {@code ROLE_ADMIN}</li>
+     *   <li>{@code CLIENT} - returns a list containing {@code ROLE_CLIENT}</li>
+     *   <li>{@code OWNER} - returns a list containing {@code ROLE_OWNER}</li>
+     *   <li>Any other value - returns {@code null}</li>
+     * </ul>
      *
-     * @return a collection of {@link GrantedAuthority} objects representing the roles 
-     *         assigned to the user. Returns {@code null} if the user type does not match 
-     *         any predefined roles.
+     * @return a collection of {@link org.springframework.security.core.GrantedAuthority} representing the user's roles,
+     *         or {@code null} if the user type is unrecognized.
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -129,12 +119,6 @@ public class User implements UserDetails{
         }
     }
 
-    /**
-     * Retrieves the username of the user.
-     * In this implementation, the username corresponds to the user's email address.
-     *
-     * @return the email of the user as their username.
-     */
     @Override
     public String getUsername() {
 
@@ -146,6 +130,15 @@ public class User implements UserDetails{
         this.email = userUpdateDTO.newEmail();
     }
 
+    /**
+     * Adds a new star rating to the user and updates the average stars.
+     * <p>
+     * If the user has no reviews, sets the stars to the given value.
+     * Otherwise, recalculates the average stars based on the existing reviews and the new rating.
+     * </p>
+     *
+     * @param stars2 the new star rating to add
+     */
     public void addStars(int stars2) {
         if (this.reviews == null || this.reviews.isEmpty()) {
             this.stars = stars2;

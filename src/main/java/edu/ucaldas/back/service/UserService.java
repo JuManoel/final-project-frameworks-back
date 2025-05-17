@@ -21,34 +21,22 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 /**
- * Service class for managing user-related operations.
- * 
- * This class provides methods to handle user operations such as saving a new user,
- * retrieving user details, updating user information, updating user passwords, 
- * and deleting users. It performs necessary validations before executing these 
- * operations to ensure data integrity and consistency.
- * 
- * Dependencies:
- * - IUserRepository: Repository interface for user data persistence.
- * - ValidationsUser: Utility class for user-related validations.
- * - ValidationsRent: Utility class for rent-related validations.
- * - ValidationsHouse: Utility class for house-related validations.
- * 
- * Methods:
- * - saveUser(UserData user): Saves a new user after validating the email.
- * - getUser(String email): Retrieves user details by email if the user exists and is active.
- * - updateUser(UserUpdateDTO userUpdateDTO): Updates user information after performing validations.
- * - updateUserPassword(UserUpdatePasswordDTO userUpdatePasswordDTO): Updates the user's password.
- * - deleteUser(String email): Marks a user as inactive after ensuring no active rents or houses exist.
- * 
- * Exceptions:
- * - EntityAlredyExists: Thrown when attempting to save or update a user with an email that already exists.
- * - EntityNotFoundException: Thrown when a user is not found, or when certain conditions are not met 
- *   (e.g., incorrect password, active rents, or active houses).
- * 
- * Annotations:
- * - @Service: Indicates that this class is a Spring service component.
- * - @Transactional: Ensures atomicity for methods that modify user data.
+ * Service class for managing user-related operations such as registration, retrieval,
+ * update, password management, and deactivation.
+ * <p>
+ * This service handles business logic for user management, including:
+ * <ul>
+ *     <li>Registering new users with unique email validation and password encoding.</li>
+ *     <li>Retrieving user information by email.</li>
+ *     <li>Updating user profile and password for the currently authenticated user.</li>
+ *     <li>Deactivating users after checking for active rents or houses.</li>
+ * </ul>
+ * <p>
+ * Exceptions are thrown for cases such as duplicate emails, not found entities,
+ * and forbidden operations when business rules are violated.
+ * </p>
+ *
+ * @author juan-manoel
  */
 @Service
 public class UserService {
@@ -68,13 +56,15 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     /**
-     * Saves a new user to the repository after validating the email.
+     * Saves a new user to the repository after validating that the email does not already exist.
+     * If a user with the given email already exists, an EntityAlredyExists exception is thrown.
+     * The user's password is securely encoded before saving.
      *
-     * @param user The user data to be saved.
-     * @throws EntityAlredyExists if the email provided in the user data already exists.
+     * @param user the user data to be saved
+     * @throws EntityAlredyExists if a user with the provided email already exists
      */
     public void saveUser(UserData user) {
-        if (validationsUser.existsEmail(user.email())) {
+        if (validationsUser.existsUser(user.email())) {
             throw new EntityAlredyExists("Email already exists");
         }
         User newUser = new User(user);
@@ -83,12 +73,11 @@ public class UserService {
     }
 
     /**
-     * Retrieves a user by their email address if they exist and are active.
+     * Retrieves a user's information based on their email address.
      *
      * @param email the email address of the user to retrieve
-     * @return a {@link UserGetTDO} object containing the user's details such as
-     *         name, email, stars, and type of  user
-     * @throws EntityNotFoundException if the user does not exist or is not active
+     * @return a {@link UserGetTDO} object containing the user's name, email, stars, and user type
+     * @throws EntityNotFoundException if no user exists with the provided email
      */
     public UserGetTDO getUser(String email) {
         if (!validationsUser.existsUser(email)) {
@@ -99,20 +88,26 @@ public class UserService {
         return userGetTDO;
     }
 
+
     /**
-     * Updates the information of an existing user.
+     * Updates the current authenticated user's information with the provided data.
+     * <p>
+     * This method retrieves the currently authenticated user from the security context,
+     * checks if the new email provided in the {@code userUpdateDTO} already exists in the system
+     * (if it is different from the current email), and throws an {@link EntityAlredyExists}
+     * exception if the email is already taken. If the email is available or unchanged,
+     * it updates the user's information accordingly.
+     * </p>
      *
-     * @param userUpdateDTO The data transfer object containing the user's current email,
-     *                      new email, and other updated information.
-     * @return The updated UserUpdateDTO object.
-     * @throws EntityNotFoundException If the user with the provided email does not exist.
-     * @throws EntityAlredyExists      If the new email provided already exists in the system.
+     * @param userUpdateDTO the data transfer object containing the new user information
+     * @return the updated {@link UserUpdateDTO}
+     * @throws EntityAlredyExists if the new email already exists in the system
      */
     @Transactional
     public UserUpdateDTO updateUser(UserUpdateDTO userUpdateDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
-        if (!user.getEmail().equals(userUpdateDTO.newEmail()) && validationsUser.existsEmail(userUpdateDTO.newEmail())) {
+        if (!user.getEmail().equals(userUpdateDTO.newEmail()) && validationsUser.existsUser(userUpdateDTO.newEmail())) {
             throw new EntityAlredyExists("Email already exists");
         }
         user.updateUser(userUpdateDTO);
@@ -120,12 +115,15 @@ public class UserService {
     }
 
     /**
-     * Updates the password of a user.
+     * Updates the password of the currently authenticated user.
+     * <p>
+     * This method verifies that the provided old password matches the user's current password.
+     * If the old password is correct, it encodes and updates the user's password with the new one.
+     * If the old password does not match, an {@link EntityNotFoundException} is thrown.
+     * </p>
      *
-     * @param userUpdatePasswordDTO an object containing the user's email, old password, 
-     *                              and the new password to be set.
-     * @throws EntityNotFoundException if the user does not exist or if the old password 
-     *                                 provided is incorrect.
+     * @param userUpdatePasswordDTO Data transfer object containing the old and new passwords.
+     * @throws EntityNotFoundException if the old password is incorrect.
      */
     @Transactional
     public void updateUserPassword(UserUpdatePasswordDTO userUpdatePasswordDTO) {
@@ -139,19 +137,15 @@ public class UserService {
     }
 
     /**
-     * Deletes a user by marking them as inactive in the system.
-     * 
-     * This method performs the following validations before deactivating the user:
-     * 1. Checks if the user exists in the system. If not, an EntityNotFoundException is thrown.
-     * 2. Checks if the user has any active rents. If so, an EntityNotFoundException is thrown.
-     * 3. Checks if the user has any active houses. If so, an EntityNotFoundException is thrown.
-     * 
-     * If all validations pass, the user's active status is set to false and the changes
-     * are saved to the database.
-     * 
-     * @param email The email of the user to be deleted.
-     * @throws EntityNotFoundException if the user does not exist, has active rents, 
-     *         or has active houses.
+     * Deactivates the currently authenticated user by setting their active status to false.
+     * <p>
+     * This method first checks if the user has any active rents or houses using the
+     * {@code validationsRent} and {@code validationsHouse} services. If the user has active
+     * rents or houses, a {@link NotPermited} exception is thrown and the user cannot be deactivated.
+     * Otherwise, the user's active status is set to false and the change is persisted.
+     * </p>
+     *
+     * @throws NotPermited if the user has active rents or houses.
      */
     @Transactional
     public void deleteUser() {

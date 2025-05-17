@@ -1,5 +1,16 @@
 package edu.ucaldas.back.infra.exception;
 
+/**
+ * Exception thrown to indicate that the requested data was not found.
+ * <p>
+ * This exception extends {@link RuntimeException} and can be used to signal
+ * that a particular data entity or resource could not be located.
+ * </p>
+ *
+ * <p>
+ * Multiple constructors are provided to allow for custom messages and causes.
+ * </p>
+ */
 public class DataNotFound extends RuntimeException {
     public DataNotFound() {
         super("Data not found.");

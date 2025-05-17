@@ -9,25 +9,17 @@ import org.springframework.stereotype.Service;
 import edu.ucaldas.back.repository.IUserRepository;
 
 /**
- * Service class for handling user authentication.
- * Implements the {@link UserDetailsService} interface to provide custom user
- * authentication logic.
- * 
- * This service is responsible for loading user details based on the provided
- * login information.
- * It interacts with the {@link IUserRepository} to fetch user data from the
- * database.
- * 
- * Dependencies:
- * - {@link IUserRepository}: Repository for accessing user data.
- * 
- * Methods:
- * - {@code loadUserByUsername(String login)}: Loads user details by email and
- * ensures the user is active.
- * 
- * Annotations:
- * - {@code @Service}: Marks this class as a Spring service component.
- * - {@code @Autowired}: Injects the {@link IUserRepository} dependency.
+ * Service responsible for handling user authentication logic.
+ * <p>
+ * Implements the {@link UserDetailsService} interface to provide user details
+ * retrieval based on email for Spring Security authentication.
+ * </p>
+ * <p>
+ * This service interacts with the {@link IUserRepository} to fetch user information
+ * from the data source, ensuring that only active users can be authenticated.
+ * </p>
+ *
+ * @author juan-manoel
  */
 @Service
 public class AutenticationService implements UserDetailsService {
@@ -36,13 +28,13 @@ public class AutenticationService implements UserDetailsService {
     private IUserRepository userRepository;
 
     /**
-     * Loads the user details based on the provided login (email).
-     * This method retrieves an active user from the repository using their email.
+     * Loads the user details for authentication based on the provided login (email).
+     * This method retrieves a user from the repository whose email matches the given login
+     * and who is marked as active.
      *
-     * @param login the email of the user to be loaded.
-     * @return the UserDetails object containing user information.
-     * @throws UsernameNotFoundException if no active user is found with the given
-     *                                   email.
+     * @param login the email of the user to be loaded
+     * @return the UserDetails of the active user with the specified email
+     * @throws UsernameNotFoundException if no active user with the given email is found
      */
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {

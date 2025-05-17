@@ -7,6 +7,5 @@ import edu.ucaldas.back.models.rent.HouseImage;
 
 @Repository
 public interface IHouseImageRepository extends JpaRepository<HouseImage, Long> {
-    // Custom query methods can be defined here if needed
 
 }

@@ -7,6 +7,5 @@ import edu.ucaldas.back.models.chat.Chat;
 
 @Repository
 public interface IChatRepository extends JpaRepository<Chat, Long> {
-    // Custom query methods can be defined here if needed
 
 }

@@ -14,115 +14,70 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-/**
- * SecurityConfiguration class is responsible for configuring the security
- * settings of the application.
- * 
- * <p>
- * This class leverages Spring Security to define the security filter chain,
- * authentication manager,
- * and password encoder. It integrates a custom security filter for token
- * validation and sets up
- * security rules for HTTP requests.
- * 
- * <p>
- * Key Features:
- * <ul>
- * <li>Disables CSRF protection to simplify API interactions.</li>
- * <li>Configures session management to be stateless, ensuring no server-side
- * session is maintained.</li>
- * <li>Defines authorization rules, allowing public access to the "/login"
- * endpoint while securing all other endpoints.</li>
- * <li>Integrates a custom security filter into the filter chain before the
- * default authentication filter.</li>
- * <li>Provides a bean for password encoding using the BCrypt hashing algorithm
- * for secure password storage.</li>
- * <li>Exposes an {@link AuthenticationManager} bean for authentication
- * purposes.</li>
- * </ul>
- * 
- * <p>
- * Annotations:
- * <ul>
- * <li>{@link Configuration} - Marks this class as a configuration class for
- * Spring.</li>
- * <li>{@link EnableWebSecurity} - Enables Spring Security's web security
- * support.</li>
- * </ul>
- * 
- * <p>
- * Beans Provided:
- * <ul>
- * <li>{@link SecurityFilterChain} - Configures the security filter chain for
- * the application.</li>
- * <li>{@link AuthenticationManager} - Provides an authentication manager for
- * handling authentication.</li>
- * <li>{@link PasswordEncoder} - Supplies a password encoder using BCrypt for
- * secure password hashing.</li>
- * </ul>
- */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 
     @Autowired
-    private SecurityFilter securityFilter; // Custom security filter for token validation
+    private SecurityFilter securityFilter; 
 
     /**
      * Configures the security filter chain for the application.
-     * 
      * <p>
-     * This method sets up the security configuration for the application, including
-     * disabling CSRF protection, setting session management to stateless, and
-     * defining
-     * authorization rules for HTTP requests. Additionally, it integrates a custom
-     * security filter into the filter chain.
-     * 
-     * @param http the {@link HttpSecurity} object used to configure security
-     *             settings
-     * @return the configured {@link SecurityFilterChain} instance
-     * @throws Exception if an error occurs during the configuration process
-     * 
-     *                   <ul>
-     *                   <li>CSRF protection is disabled to simplify API
-     *                   interactions.</li>
-     *                   <li>Session management is set to stateless to ensure no
-     *                   server-side session is maintained.</li>
-     *                   <li>The "/login" endpoint is accessible to all users
-     *                   without authentication.</li>
-     *                   <li>All other endpoints require authentication.</li>
-     *                   <li>A custom security filter is added before the default
-     *                   {@link UsernamePasswordAuthenticationFilter}.</li>
-     *                   </ul>
+     * - Disables CSRF protection.
+     * - Allows unauthenticated access to the "/login" endpoint.
+     * - Allows unauthenticated POST requests to "/user" for user registration.
+     * - Restricts POST requests to "/review/house" to users with "ROLE_ADMIN" or
+     * "ROLE_CLIENT".
+     * - Restricts POST requests to "/house/**" to users with "ROLE_ADMIN" or
+     * "ROLE_OWNER".
+     * - Restricts POST requests to "/rent" to users with "ROLE_ADMIN" or
+     * "ROLE_OWNER".
+     * - Restricts PUT requests to "/rent/accept" to users with "ROLE_ADMIN" or
+     * "ROLE_CLIENT".
+     * - Restricts DELETE requests to "/rent" to users with "ROLE_ADMIN" or
+     * "ROLE_OWNER".
+     * - Restricts GET requests to "/rent/client" to users with "ROLE_ADMIN" or
+     * "ROLE_CLIENT".
+     * - Restricts GET requests to "/rent/owener" to users with "ROLE_ADMIN" or
+     * "ROLE_OWNER".
+     * - Requires authentication for all other requests.
+     * - Configures the session management to be stateless.
+     * - Adds a custom security filter before the
+     * UsernamePasswordAuthenticationFilter.
+     *
+     * @param http the {@link HttpSecurity} to modify
+     * @return the configured {@link SecurityFilterChain}
+     * @throws Exception if an error occurs during configuration
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests(auth -> {
-            auth.requestMatchers("/login").permitAll();
-            auth.requestMatchers(HttpMethod.POST,"/user").permitAll();
-            auth.requestMatchers(HttpMethod.POST, "/review/house").hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENT");
-            auth.requestMatchers(HttpMethod.POST, "/house/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_OWNER");
-            auth.requestMatchers(HttpMethod.POST, "/rent").hasAnyAuthority("ROLE_ADMIN", "ROLE_OWNER");
-            auth.requestMatchers(HttpMethod.PUT, "/rent/accept").hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENT");
-            auth.requestMatchers(HttpMethod.DELETE, "/rent").hasAnyAuthority("ROLE_ADMIN", "ROLE_OWNER");
-            auth.requestMatchers(HttpMethod.GET, "/rent/client").hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENT");
-            auth.requestMatchers(HttpMethod.GET, "/rent/owener").hasAnyAuthority("ROLE_ADMIN", "ROLE_OWNER");
-            auth.anyRequest().authenticated();
-        })
-        .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class).build();                                                                         // filter
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/login").permitAll();
+                    auth.requestMatchers(HttpMethod.POST, "/user").permitAll();
+                    auth.requestMatchers(HttpMethod.POST, "/review/house").hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENT");
+                    auth.requestMatchers(HttpMethod.POST, "/house/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_OWNER");
+                    auth.requestMatchers(HttpMethod.POST, "/rent").hasAnyAuthority("ROLE_ADMIN", "ROLE_OWNER");
+                    auth.requestMatchers(HttpMethod.PUT, "/rent/accept").hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENT");
+                    auth.requestMatchers(HttpMethod.DELETE, "/rent").hasAnyAuthority("ROLE_ADMIN", "ROLE_OWNER");
+                    auth.requestMatchers(HttpMethod.GET, "/rent/client").hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENT");
+                    auth.requestMatchers(HttpMethod.GET, "/rent/owener").hasAnyAuthority("ROLE_ADMIN", "ROLE_OWNER");
+                    auth.anyRequest().authenticated();
+                })
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class).build(); // filter
     }
 
     /**
-     * Creates and provides an instance of {@link AuthenticationManager} using the
-     * provided {@link AuthenticationConfiguration}.
-     *
-     * @param authenticationConfiguration the configuration object used to retrieve
-     *                                    the {@link AuthenticationManager}.
-     * @return an instance of {@link AuthenticationManager}.
-     * @throws Exception if an error occurs while retrieving the
-     *                   {@link AuthenticationManager}.
+     * Exposes the {@link AuthenticationManager} bean to be used for authentication
+     * processes.
+     * 
+     * @param authenticationConfiguration the configuration object that provides the
+     *                                    authentication manager
+     * @return the {@link AuthenticationManager} instance
+     * @throws Exception if an error occurs while retrieving the authentication
+     *                   manager
      */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
@@ -131,14 +86,16 @@ public class SecurityConfiguration {
     }
 
     /**
-     * Creates and provides a bean for password encoding using the BCrypt hashing
+     * Defines a {@link PasswordEncoder} bean that uses the BCrypt hashing
      * algorithm.
-     * BCrypt is a strong and secure algorithm designed for password hashing,
-     * ensuring
-     * that passwords are stored in a way that is resistant to brute force attacks.
+     * <p>
+     * BCrypt is a strong and adaptive hashing function recommended for securely
+     * storing passwords.
+     * This bean can be injected wherever password encoding or verification is
+     * required.
      *
-     * @return a {@link PasswordEncoder} instance that uses BCrypt for encoding
-     *         passwords.
+     * @return a {@link BCryptPasswordEncoder} instance for password hashing and
+     *         verification
      */
     @Bean
     public PasswordEncoder passwordEncoder() {

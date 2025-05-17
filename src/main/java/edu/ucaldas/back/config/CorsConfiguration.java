@@ -4,41 +4,38 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+
 /**
- * This class is responsible for configuring Cross-Origin Resource Sharing (CORS) 
- * settings for the application. It implements the {@link WebMvcConfigurer} interface 
- * to customize the default Spring MVC configuration.
- * 
- * <p>The CORS configuration allows the application to handle requests from different 
- * origins, enabling communication between the frontend and backend services. 
- * Specifically, it permits requests from "http://localhost:8080" and supports 
- * various HTTP methods such as GET, POST, PUT, DELETE, OPTIONS, HEAD, TRACE, and CONNECT.</p>
- * 
- * <p>By mapping all endpoints (/**), this configuration ensures that the API is 
- * accessible from the specified origin(s) while maintaining flexibility for 
- * development and testing purposes.</p>
- * 
- * <p>Usage of this configuration is essential for enabling secure and controlled 
- * cross-origin requests in a web application.</p>
+ * Spring configuration class for setting up Cross-Origin Resource Sharing (CORS) in the application.
+ * <p>
+ * This class implements {@link WebMvcConfigurer} to customize CORS mappings, allowing the frontend
+ * running on <code>http://localhost:8080</code> to interact with the backend. It enables HTTP methods
+ * such as GET, POST, PUT, and DELETE for all endpoints.
+ * </p>
+ *
+ * <p>
+ * Usage:
+ * <ul>
+ *   <li>Allows cross-origin requests from the specified origin.</li>
+ *   <li>Restricts allowed HTTP methods to GET, POST, PUT, and DELETE.</li>
+ *   <li>Applies these settings to all API endpoints ("/**").</li>
+ * </ul>
+ * </p>
+ *
+ * @author juan-manoel
+ * @see org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+ * @see org.springframework.web.servlet.config.annotation.CorsRegistry
  */
 @Configuration
 public class CorsConfiguration implements WebMvcConfigurer {
-    // Classe responsable por la configuracion del projecto
-    // Definimos la configuracion de CORS para permitir el acceso a la API desde
-    // cualquier origen
-    // y permitir los metodos GET, POST, PUT y DELETE
     /**
      * Configures Cross-Origin Resource Sharing (CORS) mappings for the application.
-     * 
-     * @param registry the {@link CorsRegistry} to add CORS mappings to
-     * 
-     *                 This method allows requests from the specified origin(s) and
-     *                 HTTP methods
-     *                 to access the application's resources. It maps all endpoints
-     *                 (/**) to be
-     *                 accessible from "http://localhost:8080" and supports the
-     *                 following HTTP methods:
-     *                 GET, POST, PUT, DELETE, OPTIONS, HEAD, TRACE, and CONNECT.
+     * <p>
+     * This method allows HTTP requests from the specified origin ("http://localhost:8080")
+     * to access resources on the server. It permits the HTTP methods GET, POST, PUT, and DELETE
+     * for all endpoints ("/**").
+     *
+     * @param registry the {@link CorsRegistry} to which CORS mappings are added
      */
     @Override
     @SuppressWarnings("null")

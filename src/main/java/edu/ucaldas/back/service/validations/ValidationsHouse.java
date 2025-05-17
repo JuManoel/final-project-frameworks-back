@@ -8,35 +8,21 @@ import edu.ucaldas.back.models.rent.AddressData;
 import edu.ucaldas.back.repository.IHouseRepository;
 
 /**
- * The ValidationsHouse class provides validation methods for checking the existence
- * of addresses and verifying house ownership based on user email addresses.
- * 
- * <p>This class interacts with the {@link IHouseRepository} to perform the following:
+ * Service class providing validation methods related to house entities.
+ * <p>
+ * This component offers utility methods to check the existence of houses and addresses,
+ * as well as ownership and availability status, by interacting with the house repository.
+ * </p>
+ *
  * <ul>
- *   <li>Check if a specific address exists in the repository.</li>
- *   <li>Verify if a user owns a house based on their email address.</li>
+ *   <li>Validates if a house exists by its address details.</li>
+ *   <li>Checks if an address is already registered in the repository.</li>
+ *   <li>Determines if a user owns a house based on their email.</li>
+ *   <li>Verifies if a house exists, is active, and is available by its ID.</li>
  * </ul>
- * 
- * <p>It supports validation using both {@link Address} and {@link AddressData} objects
- * for address-related checks.
- * 
- * <p>Dependencies:
- * <ul>
- *   <li>{@link IHouseRepository}: Repository interface for house-related data operations.</li>
- * </ul>
- * 
- * <p>Methods:
- * <ul>
- *   <li>{@code existsAddress(Address address)}: Checks if an address exists in the repository.</li>
- *   <li>{@code existsAddress(AddressData address)}: Checks if an address exists in the repository using AddressData.</li>
- *   <li>{@code userHasHouse(String email)}: Verifies if a user owns a house based on their email.</li>
- * </ul>
- * 
- * <p>Annotations:
- * <ul>
- *   <li>{@code @Component}: Marks this class as a Spring component for dependency injection.</li>
- *   <li>{@code @Autowired}: Injects the {@link IHouseRepository} dependency.</li>
- * </ul>
+ *
+ * @author juan-manoel
+ * @see edu.ucaldas.back.repository.IHouseRepository
  */
 @Component
 public class ValidationsHouse {
@@ -44,11 +30,10 @@ public class ValidationsHouse {
     private IHouseRepository houseRepository;
 
     /**
-     * Checks if an address already exists in the repository.
+     * Checks if a house exists in the repository with the specified address details.
      *
-     * @param address The Address object containing the details of the address
-     *                to be checked, including street, city, state, number, and complement.
-     * @return {@code true} if the address exists in the repository, {@code false} otherwise.
+     * @param address the Address object containing street, city, state, number, and complement information
+     * @return true if a house with the given address exists, false otherwise
      */
     public boolean existsAddress(Address address) {
         String street = address.getStreet();
@@ -62,12 +47,10 @@ public class ValidationsHouse {
     }
 
     /**
-     * Checks if an address exists in the house repository.
+     * Checks if an address already exists in the house repository.
      *
-     * @param address The address data to check, containing street, city, state, 
-     *                number, and complement information.
-     * @return {@code true} if the address exists in the repository, 
-     *         {@code false} otherwise.
+     * @param address the {@link AddressData} object containing the address details to check
+     * @return {@code true} if the address exists in the repository, {@code false} otherwise
      */
     public boolean existsAddress(AddressData address) {
         String street = address.street();
@@ -81,15 +64,21 @@ public class ValidationsHouse {
     }
 
     /**
-     * Checks if a user owns a house based on their email address.
+     * Checks if a user, identified by their email, owns a house.
      *
      * @param email the email address of the user to check
-     * @return true if the user owns a house, false otherwise
+     * @return {@code true} if a house exists with the given owner's email, {@code false} otherwise
      */
     public boolean userHasHouse(String email) {
         return houseRepository.existsByOwnerEmail(email);
     }
 
+    /**
+     * Checks if a house with the specified ID exists, is active, and is available.
+     *
+     * @param id the unique identifier of the house to check
+     * @return {@code true} if the house exists, is active, and is available; {@code false} otherwise
+     */
     public boolean existsHouse(long id) {
         return houseRepository.existsByIdAndIsActiveTrueAndIsAvailableTrue(id);
     }

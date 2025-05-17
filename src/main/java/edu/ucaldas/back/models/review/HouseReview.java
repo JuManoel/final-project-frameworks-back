@@ -12,31 +12,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 /**
- * Represents a review for a house, extending the base Review class.
- * This entity is mapped to the "house_review" table in the database.
- * It includes information about the house being reviewed and inherits
- * common review properties such as the writer, comment, and star rating.
- * 
- * <p>Annotations:</p>
+ * Entity representing a review for a house.
+ * <p>
+ * Extends the {@link Review} class to include a reference to the reviewed {@link House}.
+ * </p>
+ *
+ * <p>
+ * This entity is mapped to the "house_reviews" table in the database.
+ * </p>
+ *
  * <ul>
- *   <li>@Entity - Marks this class as a JPA entity.</li>
- *   <li>@Table(name = "house_review") - Specifies the table name in the database.</li>
- *   <li>@Getter, @Setter - Lombok annotations to generate getter and setter methods.</li>
- *   <li>@NoArgsConstructor, @AllArgsConstructor - Lombok annotations to generate constructors.</li>
+ *   <li>{@code houseReviewed}: The house that is being reviewed.</li>
  * </ul>
- * 
- * <p>Fields:</p>
- * <ul>
- *   <li>houseReviewed - The house being reviewed, represented as a Many-to-One relationship.</li>
- * </ul>
- * 
- * <p>Constructors:</p>
- * <ul>
- *   <li>HouseReview() - No-argument constructor.</li>
- *   <li>HouseReview(HouseReviewData houseReviewData, User writer, House houseReviewed) - 
- *       Constructs a HouseReview with the provided review data, writer, and house being reviewed.</li>
- * </ul>
+ *
+ * <p>
+ * Provides constructors for JPA and for creating a review from data transfer objects.
+ * </p>
  */
 @Entity
 @Table(name = "house_reviews")

@@ -1,5 +1,13 @@
 package edu.ucaldas.back.infra.exception;
 
+/**
+ * Exception thrown to indicate an error occurred while saving a file.
+ * <p>
+ * This exception can be used to signal various file saving issues,
+ * such as I/O errors, permission problems, or other unexpected failures
+ * during the file save operation.
+ * </p>
+ */
 public class SaveFileError extends RuntimeException {
     public SaveFileError() {
         super("Error saving file.");

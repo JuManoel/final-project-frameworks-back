@@ -4,20 +4,33 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * The main entry point for the Spring Boot application.
+ * Main class for the FrameworksJs Spring Boot application.
  * <p>
- * This class is annotated with {@code @SpringBootApplication}, which is a 
- * convenience annotation that combines {@code @Configuration}, 
- * {@code @EnableAutoConfiguration}, and {@code @ComponentScan}.
+ * This class serves as the entry point for the application and is responsible for bootstrapping
+ * the Spring Boot context.
  * </p>
+ *
  * <p>
- * The {@code main} method uses {@code SpringApplication.run} to launch the 
- * application.
+ * Usage:
+ * <pre>
+ *     java -jar frameworksjs.jar
+ * </pre>
  * </p>
+ *
+ * @author juan-manoel
+ * @since 1.0
  */
 @SpringBootApplication
 public class FrameworksJsApplication {
 
+	/**
+	 * The entry point of the Spring Boot application.
+	 * <p>
+	 * This method starts the application by invoking {@link SpringApplication#run(Class, String...)}
+	 * with the current application class and command-line arguments.
+	 *
+	 * @param args command-line arguments passed to the application
+	 */
 	public static void main(String[] args) {
 		SpringApplication.run(FrameworksJsApplication.class, args);
 	}

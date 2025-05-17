@@ -11,25 +11,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 /**
- * Represents a review written by a user about another user.
- * This class extends the {@link Review} class and includes additional
- * information about the user being reviewed.
- * 
- * <p>
- * The {@code UserReview} entity is mapped to the "user_review" table in the database.
- * It contains a reference to the user being reviewed and inherits properties
- * such as the writer, comment, and star rating from the {@link Review} class.
- * </p>
- * 
- * <p>
- * This class provides a constructor to create a user review using data from
- * {@link UserReviewData}, the writer of the review, and the user being reviewed.
- * </p>
- * 
- * @see Review
- * @see User
- * @see UserReviewData
+ * Entity representing a review written by a user about another user.
+ * Extends the {@link Review} class to include specific information about the user being reviewed.
+ *
+ * <p>This class is mapped to the "user_reviews" table in the database.
+ *
+ * <ul>
+ *   <li>{@code userReviewed}: The user who is being reviewed.</li>
+ * </ul>
+ *
+ * <p>Includes constructors for JPA and for creating a review from data transfer objects.
  */
 @Entity
 @Table(name = "user_reviews")

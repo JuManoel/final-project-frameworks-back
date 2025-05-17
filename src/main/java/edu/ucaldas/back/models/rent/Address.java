@@ -7,32 +7,24 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Represents an address that can be embedded in other entities.
- * This class is annotated with @Embeddable, indicating that it is a 
- * value type and can be embedded in an entity.
+ * Represents an embeddable address entity for use in JPA/Hibernate.
+ * Contains fields for street, city, state, number, and complement.
  * 
- * <p>Fields:</p>
- * <ul>
- *   <li><b>street</b>: The name of the street.</li>
- *   <li><b>city</b>: The name of the city.</li>
- *   <li><b>state</b>: The name of the state or region.</li>
- *   <li><b>number</b>: The number of the building or house.</li>
- *   <li><b>complement</b>: Additional address details, such as apartment or suite number.</li>
- * </ul>
+ * <p>
+ * This class provides constructors for creating an Address from individual fields
+ * or from an {@code AddressData} object. It also overrides {@code equals} to allow
+ * for logical comparison of Address instances based on their field values.
+ * </p>
  * 
- * <p>Constructors:</p>
- * <ul>
- *   <li>A no-argument constructor for creating an empty address.</li>
- *   <li>A parameterized constructor for creating an address with specific values.</li>
- *   <li>A constructor that accepts an {@link AddressData} object to initialize the fields.</li>
- * </ul>
+ * <p>
+ * Lombok annotations are used to generate getters, setters, and constructors.
+ * </p>
  * 
- * <p>Annotations:</p>
- * <ul>
- *   <li>@Getter and @Setter: Automatically generate getter and setter methods for all fields.</li>
- *   <li>@AllArgsConstructor: Generates a constructor with arguments for all fields.</li>
- *   <li>@NoArgsConstructor: Generates a no-argument constructor.</li>
- * </ul>
+ * @see javax.persistence.Embeddable
+ * @see lombok.Getter
+ * @see lombok.Setter
+ * @see lombok.AllArgsConstructor
+ * @see lombok.NoArgsConstructor
  */
 @Embeddable
 @Getter

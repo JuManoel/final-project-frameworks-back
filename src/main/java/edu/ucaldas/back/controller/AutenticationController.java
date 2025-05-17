@@ -19,23 +19,39 @@ import jakarta.validation.Valid;
 
 /**
  * Controller responsible for handling user authentication requests.
- * Provides an endpoint for user login and token generation.
- *
- * Endpoints:
- * - POST /login: Authenticates a user and generates a token.
+ * <p>
+ * Exposes an endpoint for user login, authenticates credentials, and issues JWT tokens upon successful authentication.
+ * </p>
+ * <ul>
+ *   <li>POST /login: Authenticates a user and returns a JWT token along with user details.</li>
+ * </ul>
  *
  * Dependencies:
- * - AuthenticationManager: Used to authenticate the user credentials.
- * - TokenService: Used to generate a token for the authenticated user.
+ * <ul>
+ *   <li>{@link AuthenticationManager} for authenticating user credentials.</li>
+ *   <li>{@link TokenService} for generating JWT tokens.</li>
+ * </ul>
  *
- * Methods:
- * - autenticateUser(LoginDTO userData): Authenticates the user based on the provided
- *   login credentials and returns a token along with user details.
+ * Example usage:
+ * <pre>
+ * POST /login
+ * {
+ *   "email": "user@example.com",
+ *   "password": "password123"
+ * }
+ * </pre>
  *
- * Annotations:
- * - @RestController: Indicates that this class is a REST controller.
- * - @RequestMapping("/login"): Maps HTTP requests to the /login path.
- * - @Autowired: Injects the required dependencies.
+ * Response:
+ * <pre>
+ * {
+ *   "token": "jwt-token",
+ *   "email": "user@example.com",
+ *   "name": "User Name",
+ *   "typeUser": "ADMIN"
+ * }
+ * </pre>
+ *
+ * @author juan-manoel
  */
 @RestController
 @RequestMapping("/login")
@@ -47,13 +63,15 @@ public class AutenticationController {
     private TokenService tokenService;
 
     /**
-     * Authenticates a user based on the provided login credentials and generates a token.
+     * Authenticates a user based on the provided login credentials.
+     * <p>
+     * Expects a {@link LoginDTO} object containing the user's email and password.
+     * If authentication is successful, generates a JWT token and returns it along with
+     * user details in a {@link TokenDTO} object.
+     * </p>
      *
-     * @param userData The login credentials provided by the user, including email and password.
-     *                 This parameter is validated using the @Valid annotation.
-     * @return A ResponseEntity containing a TokenDTO object with the generated token,
-     *         the authenticated user's name, and their authorities.
-     * @throws AuthenticationException If the authentication process fails.
+     * @param userData the login credentials of the user (email and password)
+     * @return a {@link ResponseEntity} containing the generated token and user information
      */
     @PostMapping()
     public ResponseEntity<TokenDTO> autenticateUser(@RequestBody @Valid LoginDTO userData) {

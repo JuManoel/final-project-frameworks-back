@@ -15,32 +15,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 /**
- * Represents a rental entity in the system.
- * This class is mapped to the "rent" table in the database.
- * It contains information about a rental, including the associated house,
- * the locator (user who rents the house), the price, and the rental status.
+ * Represents a rental agreement between a user (locator) and a house.
  * 
- * Annotations:
- * - @Entity: Marks this class as a JPA entity.
- * - @Table: Specifies the table name in the database.
- * - @Getter, @Setter: Automatically generates getter and setter methods for all fields.
- * - @NoArgsConstructor: Generates a no-argument constructor.
- * - @AllArgsConstructor: Generates a constructor with all fields as parameters.
- * - @EqualsAndHashCode: Generates equals and hashCode methods based on the "id" field.
- * 
- * Fields:
- * - id: The unique identifier for the rental (primary key).
- * - house: The house being rented, mapped as a many-to-one relationship.
- * - price: The price of the rental.
- * - locator: The user who rents the house, mapped as a many-to-one relationship.
- * - accepted: Indicates whether the rental has been accepted.
- * - isActive: Indicates whether the rental is currently active.
- * 
- * Constructors:
- * - Rent(): Default no-argument constructor.
- * - Rent(RentData rentData, House house, User locator): Initializes a new Rent instance
- *   with the provided rental data, house, and locator. Sets "accepted" to false and "isActive" to true.
+ * <p>This entity maps to the "rents" table in the database and contains information
+ * about the rented house, the user who is renting (locator), the rental price,
+ * and the status of the rental (accepted and active).</p>
+ *
+ * <p>Fields:</p>
+ * <ul>
+ *   <li><b>id</b>: Unique identifier for the rent.</li>
+ *   <li><b>house</b>: The house being rented.</li>
+ *   <li><b>price</b>: The price of the rent.</li>
+ *   <li><b>locator</b>: The user who is renting the house.</li>
+ *   <li><b>accepted</b>: Indicates if the rent has been accepted.</li>
+ *   <li><b>isActive</b>: Indicates if the rent is currently active.</li>
+ * </ul>
+ *
+ * <p>Constructors are provided for JPA and for creating a new Rent from RentData, House, and User.</p>
  */
 @Entity
 @Table(name = "rents")

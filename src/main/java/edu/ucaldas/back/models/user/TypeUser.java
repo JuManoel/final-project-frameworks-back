@@ -1,42 +1,38 @@
 package edu.ucaldas.back.models.user;
 
+
 /**
- * Enum representing different types of users in the system.
- * Each type of user is associated with a specific string value.
+ * The {@code TypeUser} enum represents the different types of users in the system.
+ * Each enum constant is associated with a string value that identifies the user type.
+ * <p>
+ * Available user types:
+ * <ul>
+ *   <li>{@link #OWNER} - Represents an owner user.</li>
+ *   <li>{@link #CLIENT} - Represents a client user.</li>
+ *   <li>{@link #ADMIN} - Represents an admin user.</li>
+ * </ul>
+ * </p>
  */
 public enum TypeUser {
 
-    /**
-     * Represents an owner user type.
-     */
     OWNER("owner"),
 
-    /**
-     * Represents a tenant user type.
-     */
     CLIENT("client"),
 
-    /**
-     * Represents an admin user type.
-     */
     ADMIN("admin");
 
     private String typeUser;
 
-    /**
-     * Constructor for the TypeUser enum.
-     *
-     * @param typeUser The string representation of the user type.
-     */
     TypeUser(String typeUser) {
         this.typeUser = typeUser;
     }
 
     /**
-     * Converts a string to its corresponding TypeUser enum value.
+     * Returns the string representation of a TypeUser enum constant that matches the given string,
+     * ignoring case considerations.
      *
-     * @param typeUser The string representation of the user type.
-     * @return The corresponding TypeUser enum value, or null if no match is found.
+     * @param typeUser the string to match against the typeUser field of the enum constants
+     * @return the matching typeUser string if found; otherwise, {@code null}
      */
     public String fromString(String typeUser) {
         for (TypeUser type : TypeUser.values()) {
