@@ -158,10 +158,10 @@ public class UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User login = (User) authentication.getPrincipal();
         if(validationsRent.userHasRent(login.getEmail())){
-            throw new EntityNotFoundException("User has active rents");
+            throw new NotPermited("User has active rents");
         }
         if(validationsHouse.userHasHouse(login.getEmail())){
-            throw new EntityNotFoundException("User has active houses");
+            throw new NotPermited("User has active houses");
         }
         login.setActive(false);
         userRepository.save(login);
