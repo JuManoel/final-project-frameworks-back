@@ -102,7 +102,12 @@ public class SecurityConfiguration {
             auth.requestMatchers("/login").permitAll();
             auth.requestMatchers(HttpMethod.POST,"/user").permitAll();
             auth.requestMatchers(HttpMethod.POST, "/review/house").hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENT");
-            auth.requestMatchers(HttpMethod.POST, "/house/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_OWENER");
+            auth.requestMatchers(HttpMethod.POST, "/house/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_OWNER");
+            auth.requestMatchers(HttpMethod.POST, "/rent").hasAnyAuthority("ROLE_ADMIN", "ROLE_OWNER");
+            auth.requestMatchers(HttpMethod.PUT, "/rent/accept").hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENT");
+            auth.requestMatchers(HttpMethod.DELETE, "/rent").hasAnyAuthority("ROLE_ADMIN", "ROLE_OWNER");
+            auth.requestMatchers(HttpMethod.GET, "/rent/client").hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENT");
+            auth.requestMatchers(HttpMethod.GET, "/rent/owener").hasAnyAuthority("ROLE_ADMIN", "ROLE_OWNER");
             auth.anyRequest().authenticated();
         })
         .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

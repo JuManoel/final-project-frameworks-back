@@ -91,7 +91,7 @@ public class ValidationsHouse {
     }
 
     public boolean existsHouse(long id) {
-        return houseRepository.existsById(id);
+        return houseRepository.existsByIdAndIsActiveTrueAndIsAvailableTrue(id);
     }
 
 }

@@ -12,6 +12,7 @@ O backend **não é obrigatório** para a matéria, mas foi desenvolvido para fa
 - [Usuários](docs/USER.md)
 - [Casas](docs/HOUSE.md) <!-- Crie este arquivo se desejar documentar casas -->
 - [Avaliações](docs/REVIEW.md) <!-- Crie este arquivo se desejar documentar avaliações -->
+- [Alugueis](docs/RENT.md)
 
 ---
 

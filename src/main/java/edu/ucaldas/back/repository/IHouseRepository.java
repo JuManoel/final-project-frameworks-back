@@ -27,4 +27,9 @@ public interface IHouseRepository extends JpaRepository<House, Long> {
         @Query("SELECT h FROM House h WHERE h.isActive = true AND h.isAvailable = true")
         Page<House> findAllAvailableAndActiveHouses(Pageable pageable);
 
+        @Query("SELECT h FROM House h WHERE h.isActive = true AND h.isAvailable = false AND h.id = :id")
+        Optional<House> findByIdAndIsAvailableFalseAndIsActiveTrue(@Param("id") Long id);
+
+        boolean existsByIdAndIsActiveTrueAndIsAvailableTrue(Long id);
+
 }

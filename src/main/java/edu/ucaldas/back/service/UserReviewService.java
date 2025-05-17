@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.ucaldas.back.DTO.ReviewDTO;
+import edu.ucaldas.back.infra.exception.NotPermited;
 import edu.ucaldas.back.models.review.UserReview;
 import edu.ucaldas.back.models.review.UserReviewData;
 import edu.ucaldas.back.models.user.User;
@@ -46,6 +47,9 @@ public class UserReviewService {
         User writer = (User) authentication.getPrincipal();
         if (!validationsUser.existsEmail(userReviewData.userReviewed())) {
             throw new EntityNotFoundException("Invalid user email");
+        }
+        if(writer.getEmail().equals(userReviewData.userReviewed())){
+            throw new NotPermited("You cannot review yourself");
         }
         var userReviewed = userRepository.getUser(userReviewData.userReviewed()).get();
         var userReview = new UserReview(userReviewData, writer, userReviewed);

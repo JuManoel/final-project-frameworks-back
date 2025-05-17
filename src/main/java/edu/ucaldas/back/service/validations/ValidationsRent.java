@@ -77,4 +77,8 @@ public class ValidationsRent {
         }
         return rentRepository.existsActiveRentByHouseId(idHouse);
     }
+
+    public boolean existsRent(Long id) {
+        return rentRepository.existsByIdAndIsActiveTrue(id);
+    }
 }
