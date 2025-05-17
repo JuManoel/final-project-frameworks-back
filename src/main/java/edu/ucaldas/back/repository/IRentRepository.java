@@ -8,9 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import edu.ucaldas.back.models.rent.House;
 import edu.ucaldas.back.models.rent.Rent;
-import jakarta.validation.constraints.NotNull;
 
 @Repository
 public interface IRentRepository extends JpaRepository<Rent, Long> {
