@@ -16,7 +16,7 @@
     "token": "JWT_TOKEN_AQUI",
     "email": "usuario@email.com",
     "name": "Nombre del Usuario",
-    "typeUser": "ADMIN|CLIENT|OWENER"
+    "typeUser": "ADMIN|CLIENT|OWNER"
   }
   ```
 - **Notas:**  
@@ -29,5 +29,5 @@
 - Todos los endpoints (excepto crear usuario y login) requieren autenticación con JWT.
 - El token debe enviarse en el header:  
   `Authorization: Bearer JWT_TOKEN_AQUI`
-- Los campos y tipos de usuario válidos son: `ADMIN`, `CLIENT`, `OWENER`.
+- Los campos y tipos de usuario válidos son: `ADMIN`, `CLIENT`, `OWNER`.
 - Si tienes dudas, revisa los ejemplos o pregunta al backend.

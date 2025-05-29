@@ -9,7 +9,7 @@
     "name": "Nombre del Usuario",
     "email": "usuario@email.com",
     "password": "SuContraseña",
-    "typeUser": "ADMIN|CLIENT|OWENER"
+    "typeUser": "ADMIN|CLIENT|OWNER"
   }
   ```
 - **Respuesta exitosa:**  
@@ -30,7 +30,7 @@
     "name": "Nombre del Usuario",
     "email": "usuario@email.com",
     "stars": 4.5,
-    "typeUser": "ADMIN|CLIENT|OWENER"
+    "typeUser": "ADMIN|CLIENT|OWNER"
   }
   ```
 
@@ -45,7 +45,6 @@
   ```json
   {
     "newName": "Nuevo Nombre",
-    "email": "usuario@email.com",
     "newEmail": "nuevo@email.com"
   }
   ```
@@ -53,7 +52,6 @@
   ```json
   {
     "newName": "Nuevo Nombre",
-    "email": "usuario@email.com",
     "newEmail": "nuevo@email.com"
   }
   ```

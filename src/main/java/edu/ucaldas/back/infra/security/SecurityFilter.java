@@ -72,6 +72,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     @SuppressWarnings("null")
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         var authorizationHeader = request.getHeader("Authorization");
+        System.out.println(request);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             var token = authorizationHeader.replace("Bearer ", ""); // duvidas sobre os 2 espacos
             var userEmail = tokenService.getSubject(token);
